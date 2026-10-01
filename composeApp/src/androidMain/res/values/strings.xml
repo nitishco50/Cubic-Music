@@ -791,6 +791,7 @@
 <string name="queuetype">Queue type</string>
 <string name="chart_top_songs">Top songs</string>
 <string name="chart_top_artists">Top artists</string>
+<string name="trending_now">Trending now</string>
 <string name="lang_interlingua">Interlingua</string>
 <string name="error_no_internet">No network connection</string>
 <string name="error_timeout">Connection timeout</string>
