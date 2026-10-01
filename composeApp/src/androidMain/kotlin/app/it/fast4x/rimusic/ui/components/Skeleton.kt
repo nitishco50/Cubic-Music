@@ -28,12 +28,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import app.kreate.android.BuildConfig
+import app.kreate.android.R
 import app.it.fast4x.rimusic.colorPalette
 import app.it.fast4x.rimusic.enums.CheckUpdateState
+import app.it.fast4x.rimusic.enums.NavRoutes
 import app.it.fast4x.rimusic.enums.NavigationBarPosition
 import app.it.fast4x.rimusic.enums.PlayerPosition
 import app.it.fast4x.rimusic.enums.UiType
@@ -41,6 +45,7 @@ import app.it.fast4x.rimusic.ui.components.navigation.header.AppHeader
 import app.it.fast4x.rimusic.ui.components.navigation.header.AppleAppHeader
 import app.it.fast4x.rimusic.ui.components.navigation.nav.AbstractNavigationBar
 import app.it.fast4x.rimusic.ui.components.navigation.nav.HorizontalNavigationBar
+import app.it.fast4x.rimusic.ui.components.navigation.nav.TabStrip
 import app.it.fast4x.rimusic.ui.components.navigation.nav.VerticalNavigationBar
 import app.it.fast4x.rimusic.utils.checkUpdateStateKey
 import app.it.fast4x.rimusic.utils.checkBetaUpdatesKey
@@ -65,14 +70,42 @@ fun Skeleton(
     navBarContent: @Composable (@Composable (Int, String, Int) -> Unit) -> Unit,
     content: @Composable AnimatedVisibilityScope.(Int) -> Unit
 ) {
+    // Global footer destinations: Home, Playlist, Download, Settings.
+    // Screen specific tabs are rendered by TabStrip inside the content area.
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val globalSelectedIndex = when ( backStackEntry?.destination?.route ) {
+        NavRoutes.playlistLibrary.name -> 1
+        NavRoutes.downloads.name -> 2
+        NavRoutes.settings.name -> 3
+        else -> 0
+    }
+    val onGlobalClick: (Int) -> Unit = { index ->
+        val route = when ( index ) {
+            1 -> NavRoutes.playlistLibrary.name
+            2 -> NavRoutes.downloads.name
+            3 -> NavRoutes.settings.name
+            else -> NavRoutes.home.name
+        }
+        navController.navigate( route ) {
+            launchSingleTop = true
+            if ( index == 0 )
+                popUpTo( NavRoutes.home.name ) { inclusive = false }
+        }
+    }
+
     val navigationBar: AbstractNavigationBar =
         when( NavigationBarPosition.current() ) {
             NavigationBarPosition.Left, NavigationBarPosition.Right ->
-                VerticalNavigationBar( tabIndex, onTabChanged, navController )
+                VerticalNavigationBar( globalSelectedIndex, onGlobalClick, navController )
             NavigationBarPosition.Top, NavigationBarPosition.Bottom ->
-                HorizontalNavigationBar( tabIndex, onTabChanged, navController )
+                HorizontalNavigationBar( globalSelectedIndex, onGlobalClick, navController )
         }
-    navigationBar.add( navBarContent )
+    navigationBar.add { Item ->
+        Item( 0, stringResource( R.string.home ), R.drawable.home )
+        Item( 1, stringResource( R.string.playlists ), R.drawable.library )
+        Item( 2, stringResource( R.string.downloaded ), R.drawable.downloaded )
+        Item( 3, stringResource( R.string.settings ), R.drawable.settings )
+    }
 
     val appHeader: @Composable () -> Unit = {
         Column(
@@ -144,16 +177,26 @@ fun Skeleton(
                     }
                 } else Modifier
 
-                AnimatedContent(
-                    targetState = tabIndex,
-                    transitionSpec = transition(),
-                    content = content,
-                    label = "",
+                Column(
                     modifier = Modifier
                         .fillMaxHeight()
                         .padding( top = topPadding )
-                        .then(swipeModifier)
-                )
+                ) {
+                    TabStrip(
+                        navBarContent = navBarContent,
+                        tabIndex = tabIndex,
+                        onTabChanged = onTabChanged
+                    )
+                    AnimatedContent(
+                        targetState = tabIndex,
+                        transitionSpec = transition(),
+                        content = content,
+                        label = "",
+                        modifier = Modifier
+                            .weight( 1f )
+                            .then(swipeModifier)
+                    )
+                }
 
                 if( NavigationBarPosition.Right.isCurrent() )
                     navigationBar.Draw()

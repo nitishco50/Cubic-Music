@@ -31,7 +31,6 @@ import app.it.fast4x.rimusic.colorPalette
 import app.it.fast4x.rimusic.enums.NavRoutes
 import app.it.fast4x.rimusic.enums.NavigationBarType
 import app.it.fast4x.rimusic.enums.UiType
-import app.it.fast4x.rimusic.showSearchIconInNav
 import app.it.fast4x.rimusic.typography
 import app.it.fast4x.rimusic.ui.components.themed.Button
 import app.it.fast4x.rimusic.ui.styling.Dimensions
@@ -222,41 +221,6 @@ class VerticalNavigationBar(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 content = { buttonList().forEach { it() } }
             )
-
-            // Only show search icon when UI is ViMusic and
-            // setting is turned on
-
-            if( UiType.ViMusic.isCurrent() ) {
-                val iconSize: Dp =
-                    if( isLandscape )
-                        Dimensions.navigationRailWidthLandscape
-                    else
-                        Dimensions.navigationRailWidth
-                //val iconHeight: Dp = Dimensions.halfheaderHeight
-                if ( showSearchIconInNav() )
-                    Box(
-                        contentAlignment = Alignment.TopCenter,
-                        modifier = Modifier.size(iconSize),
-                        content = {
-                            SearchButton().Draw()
-                        }
-                    )
-
-                Box(
-                    contentAlignment = Alignment.TopCenter,
-                    modifier = Modifier.size(iconSize),
-                    content = {
-                        StatsButton().Draw()
-                    }
-                )
-                Box(
-                    contentAlignment = Alignment.TopCenter,
-                    modifier = Modifier.size(iconSize),
-                    content = {
-                        SettingsButton().Draw()
-                    }
-                )
-            }
         }
     }
 }

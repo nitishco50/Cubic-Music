@@ -151,13 +151,18 @@ private data class ExportSummary(
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
-fun HomeSongsScreen(navController: NavController) {
+fun HomeSongsScreen(
+    navController: NavController,
+    forcedBuiltIn: BuiltInPlaylist? = null
+) {
     val context = LocalContext.current
     val binder = LocalPlayerServiceBinder.current
     val lazyListState = rememberLazyListState()
     val customDownloadUri by rememberPreference(MyDownloadHelper.CUSTOM_DOWNLOAD_URI_KEY, "")
 
     var builtInPlaylist by rememberPreference(builtInPlaylistKey, BuiltInPlaylist.Favorites)
+    if ( forcedBuiltIn != null && builtInPlaylist != forcedBuiltIn )
+        builtInPlaylist = forcedBuiltIn
     var isRecommendationEnabled by remember { mutableStateOf(false) }
     val recommendationsNumber by rememberPreference(recommendationsNumberKey, RecommendationsNumber.Adaptive)
     var recommendationCount by remember { mutableStateOf(0) }
@@ -278,6 +283,9 @@ fun HomeSongsScreen(navController: NavController) {
                     .background(colorPalette().background0)
                     .padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
+                // Filter chips are hidden when this screen is opened
+                // as the dedicated "Downloads" destination
+                if (forcedBuiltIn == null) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -321,6 +329,7 @@ fun HomeSongsScreen(navController: NavController) {
                         )
                     }
                 }
+                } // if (forcedBuiltIn == null)
 
                 when (builtInPlaylist) {
                     BuiltInPlaylist.Downloaded, BuiltInPlaylist.Offline -> {

@@ -36,8 +36,6 @@ import app.it.fast4x.rimusic.enums.NavRoutes
 import app.it.fast4x.rimusic.enums.NavigationBarPosition
 import app.it.fast4x.rimusic.enums.NavigationBarType
 import app.it.fast4x.rimusic.enums.UiType
-import app.it.fast4x.rimusic.showSearchIconInNav
-import app.it.fast4x.rimusic.showStatsIconInNav
 import app.it.fast4x.rimusic.ui.components.themed.Button
 import app.it.fast4x.rimusic.ui.components.themed.TextIconButton
 import app.it.fast4x.rimusic.ui.styling.Dimensions
@@ -174,7 +172,6 @@ class HorizontalNavigationBar(
                 // UI is not RiMusic and current location isn't home screen
                 if( UiType.ViMusic.isCurrent() && NavRoutes.home.isNotHere( navController ) )
                     BackButton().Draw()
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -196,21 +193,6 @@ class HorizontalNavigationBar(
                         content = { buttonList().forEach { it() } }
                     )
                 }
-
-                // Search button only visible when
-                // UI is not RiMusic and must be explicitly turned on
-                if( UiType.ViMusic.isCurrent() && showSearchIconInNav() )
-                    SearchButton()
-
-                // Settings button only visible when
-                // UI is not RiMusic
-                if( UiType.ViMusic.isCurrent() )
-                    SettingsButton().Draw()
-
-                // Statistics button only visible when
-                // UI is not RiMusic and must be explicitly turned on
-                if( UiType.ViMusic.isCurrent() && showStatsIconInNav() )
-                    StatsButton()
             }
         }
     }

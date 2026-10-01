@@ -38,7 +38,9 @@ enum class NavRoutes {
     artistAlbums,
     chipsBrowse,      // Added this for chips navigation
     musicShorts,      // Music shorts vertical feed
-    chipsPage;        // Optional: for dedicated chips page
+    chipsPage,        // Optional: for dedicated chips page
+    playlistLibrary,  // Global footer: all playlists
+    downloads;        // Global footer: downloaded songs
 
     companion object {
 

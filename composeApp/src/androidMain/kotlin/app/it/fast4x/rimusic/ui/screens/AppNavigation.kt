@@ -56,6 +56,8 @@ import app.it.fast4x.rimusic.ui.screens.artist.ArtistScreenModern
 import app.it.fast4x.rimusic.ui.screens.history.HistoryScreen
 import app.it.fast4x.rimusic.ui.screens.home.HomeScreen
 import app.it.fast4x.rimusic.ui.screens.home.HomePage
+import app.it.fast4x.rimusic.ui.screens.home.PlaylistLibraryScreen
+import app.it.fast4x.rimusic.ui.screens.home.DownloadsScreen
 import app.it.fast4x.rimusic.ui.screens.localplaylist.LocalPlaylistScreen
 import app.it.fast4x.rimusic.ui.screens.mood.MoodScreen
 import app.it.fast4x.rimusic.ui.screens.mood.MoodsPageScreen
@@ -177,6 +179,18 @@ fun AppNavigation(
                 onPlaylistUrl = navigateToPlaylist,
                 miniPlayer = miniPlayer,
                 openTabFromShortcut = openTabFromShortcut
+            )
+        }
+        composable(route = NavRoutes.playlistLibrary.name) {
+            PlaylistLibraryScreen(
+                navController = navController,
+                miniPlayer = miniPlayer
+            )
+        }
+        composable(route = NavRoutes.downloads.name) {
+            DownloadsScreen(
+                navController = navController,
+                miniPlayer = miniPlayer
             )
         }
         composable(route = NavRoutes.welcome.name) {
