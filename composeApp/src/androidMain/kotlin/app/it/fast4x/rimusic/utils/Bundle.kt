@@ -142,6 +142,17 @@ fun Bundle.stringList(name: String? = null) = bundleDelegate<List<String>?>(
     set = { k, v -> putStringArrayList(k, v?.let { ArrayList(it) }) }
 )
 
+fun Bundle.getStringListCompat(name: String): List<String> {
+    val value = get(name)
+    return when (value) {
+        is ArrayList<*> -> value.filterIsInstance<String>()
+        is List<*> -> value.filterIsInstance<String>()
+        is Array<*> -> value.filterIsInstance<String>()
+        is String -> listOf(value)
+        else -> emptyList()
+    }
+}
+
 //context(BundleAccessor)
 val Bundle.booleanArray get() = booleanArray()
 

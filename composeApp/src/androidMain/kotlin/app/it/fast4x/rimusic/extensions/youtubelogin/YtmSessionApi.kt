@@ -464,6 +464,12 @@ object YtmSessionApi {
         return postUrl(url, if (guest) "" else cookies, ::parseAlbumDetail, allowEmptyCookies = guest)
     }
 
+    fun normalizeArtistBrowseId(artistId: String): String {
+        val trimmed = artistId.trim()
+        val withoutPrefix = trimmed.removePrefix("MPLA")
+        return if (withoutPrefix.startsWith("UC")) withoutPrefix else trimmed
+    }
+
     private fun execute(request: Request): Response {
         ensureForeground("YtmSessionApi")
         val call = httpClient.newCall(request)

@@ -221,5 +221,66 @@ data class YouTubeClient(
             loginSupported = false,
             useSignatureTimestamp = false,
         )
+
+        val VISIONOS = YouTubeClient(
+            clientName = "VISIONOS",
+            clientVersion = "0.1",
+            api_key = "AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc",
+            clientId = "101",
+            userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15",
+            osName = "visionOS",
+            osVersion = "1.3.21O771",
+            deviceMake = "Apple",
+            deviceModel = "RealityDevice14,1",
+            xClientName = 101,
+            useSignatureTimestamp = false,
+        )
+
+        val IOS_MUSIC = YouTubeClient(
+            clientName = "IOS_MUSIC",
+            clientVersion = "7.27.0",
+            api_key = "AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc",
+            clientId = "26",
+            userAgent = "com.google.ios.youtubemusic/7.27.0 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)",
+            osName = "iOS",
+            osVersion = "17.5.1.21F90",
+            deviceMake = "Apple",
+            deviceModel = "iPhone16,2",
+            xClientName = 26,
+            loginSupported = false,
+            useSignatureTimestamp = false,
+        )
+
+        val ANDROID_TESTSUITE = YouTubeClient(
+            clientName = "ANDROID_TESTSUITE",
+            clientVersion = "1.9",
+            api_key = "AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w",
+            clientId = "30",
+            userAgent = "com.google.android.youtube/1.9 (Linux; U; Android 15; en_US; Pixel 9 Pro; Build/AP4A.250205.002) gzip",
+            osName = "Android",
+            osVersion = "15",
+            deviceMake = "Google",
+            deviceModel = "Pixel 9 Pro",
+            androidSdkVersion = 35,
+            xClientName = 30,
+            loginSupported = false,
+            useSignatureTimestamp = false,
+        )
+
+        val ANDROID_UNPLUGGED = YouTubeClient(
+            clientName = "ANDROID_UNPLUGGED",
+            clientVersion = "8.49.0",
+            api_key = "AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w",
+            clientId = "29",
+            userAgent = "com.google.android.apps.youtube.unplugged/8.49.0 (Linux; U; Android 15; en_US; Pixel 9 Pro; Build/AP4A.250205.002; Cronet/132.0.6834.79) gzip",
+            osName = "Android",
+            osVersion = "15",
+            deviceMake = "Google",
+            deviceModel = "Pixel 9 Pro",
+            androidSdkVersion = 35,
+            xClientName = 29,
+            loginSupported = true,
+            useSignatureTimestamp = true,
+        )
     }
 }

@@ -7,7 +7,8 @@ import app.kreate.android.me.knighthat.enums.TextView
 
 enum class UiType: TextView {
     RiMusic,
-    ViMusic;
+    ViMusic,
+    Apple;
 
     companion object {
 
@@ -20,6 +21,7 @@ enum class UiType: TextView {
         get() = when (this) {
             RiMusic -> "Cubic-Music"
             ViMusic -> "Jennie"
+            Apple -> "Apple (iOS)"
         }
 
     @Composable

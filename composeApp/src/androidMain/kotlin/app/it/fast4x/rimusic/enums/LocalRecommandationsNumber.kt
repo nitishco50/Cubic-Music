@@ -13,5 +13,6 @@ enum class LocalRecommandationsNumber(
     ThreeQ(R.string.quick_selection, 3),
     FourQ(R.string.quick_selection, 4),
     FiveQ(R.string.quick_selection, 5),
-    SixQ(R.string.quick_selection, 6);
+    SixQ(R.string.quick_selection, 6),
+    TwelveQ(R.string.quick_selection, 12);
 }

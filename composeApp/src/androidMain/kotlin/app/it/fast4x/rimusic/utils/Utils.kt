@@ -186,6 +186,10 @@ private fun parseSimpMusicLyricsJson(raw: String): SimpMusicLyricsResult? {
 
 suspend fun fetchSimpMusicLyrics(
     videoId: String,
+    title: String? = null,
+    artist: String? = null,
+    album: String? = null,
+    durationSeconds: Long? = null,
     translatedLanguage: String? = null,
     useTranslatedLyrics: Boolean = false,
 ): SimpMusicLyricsResult? {

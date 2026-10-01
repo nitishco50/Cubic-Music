@@ -352,6 +352,13 @@ const val wallpaperTypeKey = "wallpaperType"
 const val notificationTypeKey = "notificationType"
 const val topPaddingKey = "topPadding"
 
+const val crossfadeEnabledKey = "crossfadeEnabled"
+const val crossfadeDurationSecondsKey = "crossfadeDurationSeconds"
+const val notificationColorModeKey = "notificationColorMode"
+const val notificationCustomColorKey = "notificationCustomColor"
+const val playerSurfaceStyleKey = "playerSurfaceStyle"
+const val liquidPlayerLayoutStyleKey = "liquidPlayerLayoutStyle"
+
 const val autoDownloadSongKey = "autoDownloadSong"
 const val autoDownloadSongWhenLikedKey = "autoDownloadSongWhenLiked"
 const val autoDownloadSongWhenAlbumBookmarkedKey = "autoDownloadSongWhenAlbumBookmarked"

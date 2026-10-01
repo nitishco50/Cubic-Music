@@ -86,6 +86,7 @@ object MyDownloadHelper {
     const val ROOT_DOWNLOAD_DIR = "RiMusic/Downloads"
     const val CUSTOM_DOWNLOAD_URI_KEY = "custom_download_uri"
     const val CUSTOM_DOWNLOAD_PATH_KEY = "custom_download_path"
+    private const val MIN_VALID_DOWNLOAD_BYTES = 65_536L
 
     private lateinit var databaseProvider: DatabaseProvider
     lateinit var downloadCache: Cache
@@ -617,6 +618,101 @@ coroutineScope.launch {
     fun isDownloadCached(songId: String): Boolean {
         if (!MyDownloadHelper::downloadCache.isInitialized) return false
         return runCatching { downloadCache.getCachedSpans(songId).isNotEmpty() }.getOrDefault(false)
+    }
+
+    private fun isUsableDownloadCache(cache: Cache): Boolean = try {
+        cache.cacheSpace
+        true
+    } catch (th: Throwable) {
+        Timber.w(th, "Download cache is released or unavailable; reinitializing")
+        false
+    }
+
+    private enum class DownloadIntegrity { UNKNOWN, PLAYABLE, CORRUPT }
+
+    fun isDownloadCorrupt(songId: String): Boolean {
+        val download = downloads.value[songId] ?: refreshIndexedDownload(songId) ?: return false
+        return downloadIntegrity(songId, download) == DownloadIntegrity.CORRUPT
+    }
+
+    fun getCorruptDownloadedSongIds(): Set<String> =
+        downloads.value.keys.filterTo(LinkedHashSet()) { isDownloadCorrupt(it) }
+
+    private fun downloadIntegrity(songId: String, download: Download?): DownloadIntegrity {
+        if (download == null || download.state != Download.STATE_COMPLETED) {
+            return DownloadIntegrity.UNKNOWN
+        }
+        if (!MyDownloadHelper::downloadCache.isInitialized || !isUsableDownloadCache(downloadCache)) {
+            return DownloadIntegrity.UNKNOWN
+        }
+        val spans: Set<CacheSpan> = runCatching { downloadCache.getCachedSpans(songId) }
+            .getOrElse { emptySet() }
+        if (spans.isEmpty()) {
+            return if (download.bytesDownloaded > 0 || download.contentLength > 0) {
+                DownloadIntegrity.CORRUPT
+            } else {
+                DownloadIntegrity.UNKNOWN
+            }
+        }
+        val expected = expectedDownloadBytes(songId, download)
+        val cached = cachedDownloadBytes(songId)
+        if (expected != null && expected > 0) {
+            val contiguous = hasContiguousDownloadSpans(songId, spans.sortedBy { it.position }, expected)
+            val ok = contiguous &&
+                cached >= expected &&
+                maxOf(download.bytesDownloaded, cached) >= expected
+            return if (ok) DownloadIntegrity.PLAYABLE else DownloadIntegrity.CORRUPT
+        }
+        return if (maxOf(download.bytesDownloaded, cached) >= MIN_VALID_DOWNLOAD_BYTES) {
+            DownloadIntegrity.PLAYABLE
+        } else {
+            DownloadIntegrity.CORRUPT
+        }
+    }
+
+    private fun expectedDownloadBytes(songId: String, download: Download?): Long? {
+        if (download != null && download.contentLength > 0) {
+            return download.contentLength
+        }
+        return runCatching {
+            runBlocking(Dispatchers.IO) {
+                Database.formatTable.findContentLengthOf(songId).first().takeIf { it > 0 }
+            }
+        }.getOrNull()
+    }
+
+    private fun cachedDownloadBytes(songId: String): Long {
+        if (!MyDownloadHelper::downloadCache.isInitialized) return 0L
+        return runCatching {
+            downloadCache.getCachedSpans(songId).sumOf { span -> maxOf(span.length, 0L) }
+        }.getOrDefault(0L)
+    }
+
+    @Synchronized
+    private fun refreshIndexedDownload(songId: String): Download? {
+        if (!MyDownloadHelper::downloadManager.isInitialized) return null
+        val indexed = runCatching { downloadManager.downloadIndex.getDownload(songId) }
+            .getOrNull() ?: return null
+        while (true) {
+            val current = downloads.value
+            if (current[songId] == indexed) break
+            val updated = current.toMutableMap().apply { put(songId, indexed) }
+            if (downloads.compareAndSet(current, updated)) break
+        }
+        return indexed
+    }
+
+    private fun hasContiguousDownloadSpans(
+        songId: String,
+        spans: List<CacheSpan>,
+        expectedBytesOverride: Long?
+    ): Boolean {
+        var end = 0L
+        for (span in spans) {
+            if (span.position > end) return false
+            end = maxOf(end, span.position + span.length)
+        }
+        return expectedBytesOverride == null || end >= expectedBytesOverride
     }
 
     fun getDownloadedSongsCount(): Int {

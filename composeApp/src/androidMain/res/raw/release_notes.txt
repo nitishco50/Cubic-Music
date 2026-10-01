@@ -1,0 +1,22 @@
+Cubic Music v2.0.0:
+Highlights:
+- Comments now support loading, posting, refresh, pagination, retry, and isolated failure handling.
+- Downloads in HomeSongs load from local Media3 download data and metadata; offline loading ends on data or error instead of waiting indefinitely for network.
+- Data Saver limits quality and feed loading on cellular, disables automatic downloads and Canvas there, and leaves Wi-Fi unaffected.
+- Home Quick Picks and Casual show local content first, then enrich it with remote results.
+- Home notices show cached content immediately while refreshing from JSON in the background.
+- The queue highlights the current and next songs; the player's existing upcoming-song preview stays in sync.
+- Queue state refreshes as songs change, are removed, or finish playing.
+- Removing a queued song now targets that song even if the queue has changed.
+- Automatic queue refill now respects its setting and the selected queue limit.
+- Network refill controls for downloaded queues can collapse and reopen when tapped.
+Improvements:
+- The player sheet stays composed during show/hide animation for a smoother player-to-mini-player transition.
+- Completed songs are removed from the active queue after natural playback, keeping Now Playing current.
+- Queue refill also responds when the queue is shortened while playback is active.
+- Failed refill requests no longer leave the queue stuck in a loading state.
+- Fully downloaded queues remain offline unless Network refill is enabled.
+Other:
+- Thank you for supporting Cubic Music.
+- - CyberGhost
+- Full Changelog: https://github.com/cybruGhost/Cubic-Music/compare/v1.9.9...v2.0.0

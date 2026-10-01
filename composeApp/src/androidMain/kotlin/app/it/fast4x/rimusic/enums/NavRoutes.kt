@@ -37,6 +37,7 @@ enum class NavRoutes {
     artistVideos,
     artistAlbums,
     chipsBrowse,      // Added this for chips navigation
+    musicShorts,      // Music shorts vertical feed
     chipsPage;        // Optional: for dedicated chips page
 
     companion object {

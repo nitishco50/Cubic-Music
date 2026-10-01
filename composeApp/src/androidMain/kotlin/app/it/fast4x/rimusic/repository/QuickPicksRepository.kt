@@ -17,6 +17,8 @@ import it.fast4x.innertube.models.bodies.NextBody
 import it.fast4x.innertube.requests.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import timber.log.Timber
@@ -49,6 +51,11 @@ object QuickPicksRepository {
     private var lastLoadTime = 0L
     private var lastHomeSessionId: String? = null
     private const val CACHE_EXPIRATION = 1000 * 60 * 30 // 30 minutes
+    private const val CASUAL_CACHE_EXPIRATION = 900_000L
+
+    private val casualRecommendationMutex = Mutex()
+    private var casualRecommendationCache: List<Song> = emptyList()
+    private var casualRecommendationCacheTime = 0L
 
     private val json = Json { 
         ignoreUnknownKeys = true 
@@ -92,6 +99,90 @@ object QuickPicksRepository {
         if (force || now - lastLoadTime > CACHE_EXPIRATION || _trendingList.value.isEmpty()) {
             loadData()
         }
+    }
+
+    private val youtubeVideoIdRegex = Regex("^[A-Za-z0-9_-]{11}$")
+
+    private fun isYouTubeVideoId(id: String) = youtubeVideoIdRegex.matches(id)
+
+    private suspend fun <T> runCatchingOrNull(block: suspend () -> T): T? = try {
+        block()
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        null
+    }
+
+    suspend fun loadCasualPlayedRecommendations(
+        limit: Int = 12,
+        excludedIds: Set<String> = emptySet(),
+        forceRefresh: Boolean = false
+    ): List<Song> = casualRecommendationMutex.withLock {
+        val count = limit.coerceIn(1, 120)
+        val poolCount = (count * 6).coerceIn(48, 180)
+        val now = System.currentTimeMillis()
+
+        if (!forceRefresh && now - casualRecommendationCacheTime < CASUAL_CACHE_EXPIRATION && casualRecommendationCache.isNotEmpty()) {
+            val cached = casualRecommendationCache.filterNot { excludedIds.contains(it.id) }
+            if (cached.isNotEmpty()) return@withLock cached.shuffled().take(count)
+        }
+
+        val mostPlayed = runCatchingOrNull {
+            Database.eventTable.findSongsMostPlayedBetween(from = 0L, limit = maxOf(100, poolCount)).first()
+        }.orEmpty()
+            .filter { isYouTubeVideoId(it.id) && it.title.isNotBlank() }
+
+        val allLocal = runCatchingOrNull {
+            Database.songTable.all(excludeHidden = true).first()
+        }.orEmpty()
+            .filter { isYouTubeVideoId(it.id) && it.title.isNotBlank() }
+
+        val localSample = (mostPlayed + allLocal).distinctBy { it.id }.shuffled().take(poolCount)
+
+        val home: HomePage? = runCatchingOrNull {
+            YtMusic.getHomePage(setLogin = false).getOrNull()
+        }
+        val homeSongs = home?.sections?.flatMap { section ->
+            section.items.mapNotNull { item ->
+                when (item) {
+                    is Innertube.SongItem -> item.asSong
+                    is Innertube.VideoItem -> item.asSong
+                    else -> null
+                }
+            }
+        }.orEmpty()
+            .filter { isYouTubeVideoId(it.id) && it.title.isNotBlank() }
+            .distinctBy { it.id }
+
+        var merged = (mostPlayed + localSample + homeSongs).distinctBy { it.id }
+        if (merged.isEmpty()) {
+            casualRecommendationCache = emptyList()
+            casualRecommendationCacheTime = now
+            return@withLock emptyList()
+        }
+
+        val filtered = merged.filterNot { excludedIds.contains(it.id) }
+        if (filtered.isNotEmpty()) merged = filtered
+
+        val seeds = merged.shuffled().take(3)
+        val relatedAll = mutableListOf<Song>()
+        for (seed in seeds) {
+            val related = runCatchingOrNull {
+                Innertube.relatedPage(NextBody(videoId = seed.id)).getOrNull()
+            }?.songs.orEmpty()
+                .map { it.asSong }
+                .filter { isYouTubeVideoId(it.id) && it.title.isNotBlank() }
+            relatedAll += related
+        }
+
+        val counts = relatedAll.groupingBy { it.id }.eachCount()
+        val frequent = relatedAll.filter { counts.getValue(it.id) >= 2 }
+        val finalList = (frequent + merged).distinctBy { it.id }.take(poolCount)
+        casualRecommendationCache = finalList
+        casualRecommendationCacheTime = now
+
+        val result = finalList.filterNot { excludedIds.contains(it.id) }.ifEmpty { finalList }
+        result.shuffled().take(count)
     }
 
     fun loadData() {
