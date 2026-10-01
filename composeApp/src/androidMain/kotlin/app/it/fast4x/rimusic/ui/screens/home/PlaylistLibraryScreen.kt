@@ -18,7 +18,7 @@ import app.it.fast4x.rimusic.ui.components.Skeleton
 @ExperimentalComposeUiApi
 @ExperimentalMaterial3Api
 @UnstableApi
-Composable
+@Composable
 fun PlaylistLibraryScreen(
     navController: NavController,
     miniPlayer: @Composable () -> Unit = {},
