@@ -24,6 +24,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -125,10 +126,13 @@ import app.it.fast4x.rimusic.enums.FontType
 import app.it.fast4x.rimusic.enums.HomeScreenTabs
 import app.it.fast4x.rimusic.enums.Languages
 import app.it.fast4x.rimusic.enums.LogType
+import app.it.fast4x.rimusic.enums.MiniPlayerType
 import app.it.fast4x.rimusic.enums.NavRoutes
 import app.it.fast4x.rimusic.enums.PipModule
 import app.it.fast4x.rimusic.enums.PlayerBackgroundColors
+import app.it.fast4x.rimusic.enums.PlayerSurfaceStyle
 import app.it.fast4x.rimusic.enums.ThumbnailRoundness
+import app.it.fast4x.rimusic.enums.UiType
 import app.it.fast4x.rimusic.extensions.pip.PipEventContainer
 import app.it.fast4x.rimusic.extensions.pip.PipModuleContainer
 import app.it.fast4x.rimusic.extensions.pip.PipModuleCover
@@ -158,6 +162,7 @@ import app.it.fast4x.rimusic.utils.applyFontPaddingKey
 import app.it.fast4x.rimusic.utils.asMediaItem
 import app.it.fast4x.rimusic.utils.audioQualityFormatKey
 import app.it.fast4x.rimusic.utils.backgroundProgressKey
+import app.it.fast4x.rimusic.utils.blurStrengthKey
 import app.it.fast4x.rimusic.utils.closeWithBackButtonKey
 import app.it.fast4x.rimusic.utils.colorPaletteModeKey
 import app.it.fast4x.rimusic.utils.colorPaletteNameKey
@@ -187,6 +192,7 @@ import app.it.fast4x.rimusic.utils.disablePlayerHorizontalSwipeKey
 import app.it.fast4x.rimusic.utils.effectRotationKey
 import app.it.fast4x.rimusic.utils.fontTypeKey
 import app.it.fast4x.rimusic.utils.forcePlay
+import app.it.fast4x.rimusic.utils.forcedRoseThemeV1Key
 import app.it.fast4x.rimusic.utils.getEnum
 import app.it.fast4x.rimusic.utils.intent
 import app.it.fast4x.rimusic.utils.invokeOnReady
@@ -204,16 +210,20 @@ import app.it.fast4x.rimusic.utils.logDebugEnabledKey
 import app.it.fast4x.rimusic.utils.miniPlayerTypeKey
 import app.it.fast4x.rimusic.utils.navigationBarPositionKey
 import app.it.fast4x.rimusic.utils.navigationBarTypeKey
+import app.it.fast4x.rimusic.utils.noblurKey
 import app.it.fast4x.rimusic.utils.parentalControlEnabledKey
 import app.it.fast4x.rimusic.utils.pipModuleKey
 import app.it.fast4x.rimusic.utils.playNext
+import app.it.fast4x.rimusic.utils.playerBackdropKey
 import app.it.fast4x.rimusic.utils.playerBackgroundColorsKey
+import app.it.fast4x.rimusic.utils.playerSurfaceStyleKey
 import app.it.fast4x.rimusic.utils.playerThumbnailSizeKey
 import app.it.fast4x.rimusic.utils.playerVisualizerTypeKey
 import app.it.fast4x.rimusic.utils.preferences
 import app.it.fast4x.rimusic.utils.proxyHostnameKey
 import app.it.fast4x.rimusic.utils.proxyModeKey
 import app.it.fast4x.rimusic.utils.proxyPortKey
+import app.it.fast4x.rimusic.utils.putEnum
 import app.it.fast4x.rimusic.utils.rememberPreference
 import app.it.fast4x.rimusic.utils.restartActivityKey
 import app.it.fast4x.rimusic.utils.setDefaultPalette
@@ -226,6 +236,7 @@ import app.kreate.android.me.knighthat.coil.thumbnail
 import app.it.fast4x.rimusic.utils.thumbnailRoundnessKey
 import app.it.fast4x.rimusic.utils.transitionEffectKey
 import app.it.fast4x.rimusic.utils.useSystemFontKey
+import app.it.fast4x.rimusic.utils.VideoFullscreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -316,6 +327,25 @@ class MainActivity :
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        preferences.let { prefs ->
+            if (!prefs.getBoolean(forcedRoseThemeV1Key, false)) {
+                prefs.edit()
+                    .putEnum(UiTypeKey, UiType.Apple)
+                    .putEnum(colorPaletteNameKey, ColorPaletteName.CustomColor)
+                    .putInt(customColorKey, Color(0xFFF43F5E).hashCode())
+                    .putEnum(colorPaletteModeKey, ColorPaletteMode.Dark)
+                    .putEnum(playerBackgroundColorsKey, PlayerBackgroundColors.BlurredCoverColor)
+                    .putFloat(blurStrengthKey, 60f)
+                    .putFloat(playerBackdropKey, 20f)
+                    .putBoolean(noblurKey, false)
+                    .putEnum(playerSurfaceStyleKey, PlayerSurfaceStyle.Liquid)
+                    .putEnum(miniPlayerTypeKey, MiniPlayerType.Modern)
+                    .putBoolean(forcedRoseThemeV1Key, true)
+                    .commit()
+            }
+        }
+
         MonetCompat.enablePaletteCompat()
 
         enableEdgeToEdge(
@@ -1039,15 +1069,23 @@ class MainActivity :
                                 preferences.getBoolean(showButtonPlayerVideoKey, true)
 
                             val youtubePlayer: @Composable () -> Unit = {
-                                binder?.player?.currentMediaItem?.mediaId?.let {
+                                binder?.player?.currentMediaItem?.mediaId?.let { videoMediaId ->
                                     YoutubePlayer(
-                                        ytVideoId = it,
+                                        ytVideoId = videoMediaId,
                                         lifecycleOwner = LocalLifecycleOwner.current,
                                         onCurrentSecond = {},
                                         showPlayer = showPlayer,
                                         onSwitchToAudioPlayer = {
                                             showPlayer = false
                                             switchToAudioPlayer = true
+                                        },
+                                        onFullscreenToggle = {
+                                            VideoFullscreen.set(
+                                                this@MainActivity,
+                                                true,
+                                                videoMediaId,
+                                                binder?.player?.currentMediaItem?.mediaId
+                                            )
                                         }
                                     )
                                 }
@@ -1065,6 +1103,7 @@ class MainActivity :
                                     onDismissRequest = {
                                         showPlayer = false
                                         switchToAudioPlayer = false
+                                        VideoFullscreen.set(this@MainActivity, false)
                                     },
                                     containerColor = finalAppearance.colorPalette.background0,
                                     contentColor = finalAppearance.colorPalette.background0,
@@ -1088,7 +1127,10 @@ class MainActivity :
 
                             CustomModalBottomSheet(
                                 showSheet = isVideo && isVideoEnabled && showPlayer,
-                                onDismissRequest = { showPlayer = false },
+                                onDismissRequest = {
+                                    showPlayer = false
+                                    VideoFullscreen.set(this@MainActivity, false)
+                                },
                                 containerColor = finalAppearance.colorPalette.background0,
                                 contentColor = finalAppearance.colorPalette.background0,
                                 modifier = Modifier.fillMaxWidth(),
@@ -1103,6 +1145,38 @@ class MainActivity :
                                 shape = thumbnailRoundness.shape
                             ) {
                                 youtubePlayer()
+                            }
+
+                            if (VideoFullscreen.active) {
+                                val currentMediaId = binder?.player?.currentMediaItem?.mediaId
+                                LaunchedEffect(currentMediaId) {
+                                    if (VideoFullscreen.mediaChanged(currentMediaId)) {
+                                        VideoFullscreen.set(this@MainActivity, false)
+                                    }
+                                }
+                                BackHandler(enabled = true) {
+                                    VideoFullscreen.set(this@MainActivity, false)
+                                }
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(Color.Black)
+                                ) {
+                                    YoutubePlayer(
+                                        ytVideoId = VideoFullscreen.videoId,
+                                        lifecycleOwner = LocalLifecycleOwner.current,
+                                        showPlayer = true,
+                                        syncPlayer = if (isVideo) null else binder?.player,
+                                        onCurrentSecond = {},
+                                        onSwitchToAudioPlayer = {
+                                            VideoFullscreen.set(this@MainActivity, false)
+                                        },
+                                        isFullscreen = true,
+                                        onFullscreenToggle = {
+                                            VideoFullscreen.set(this@MainActivity, false)
+                                        }
+                                    )
+                                }
                             }
 
                             val menuState = LocalMenuState.current

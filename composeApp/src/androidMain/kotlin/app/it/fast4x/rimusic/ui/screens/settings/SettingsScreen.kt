@@ -110,13 +110,13 @@ fun SettingsScreen(
 ) {
     //val context = LocalContext.current
     val saveableStateHolder = rememberSaveableStateHolder()
-    val requestedTabIndex = navController.currentBackStackEntry
+    val requestedTabIndex = (navController.currentBackStackEntry
         ?.savedStateHandle
         ?.get<Int>("settings_tab_index")
         ?: navController.previousBackStackEntry
             ?.savedStateHandle
             ?.get<Int>("settings_tab_index")
-        ?: 0
+        ?: 0).coerceIn(0, 6)
 
     val (tabIndex, onTabChanged) = rememberSaveable {
         mutableIntStateOf(requestedTabIndex)
@@ -126,8 +126,9 @@ fun SettingsScreen(
 
     androidx.compose.runtime.LaunchedEffect(liveRequestedTabIndex) {
         liveRequestedTabIndex?.let { requested ->
-            if (requested != tabIndex) {
-                onTabChanged(requested)
+            val clamped = requested.coerceIn(0, 6)
+            if (clamped != tabIndex) {
+                onTabChanged(clamped)
             }
             SettingsAssistantNavigation.consume()
         }
@@ -138,33 +139,29 @@ fun SettingsScreen(
         tabIndex,
         onTabChanged,
         miniPlayer,
-        swipeTabCount = 9,
+        swipeTabCount = 7,
         navBarContent = { item ->
             item(0, stringResource(R.string.tab_general), R.drawable.ic_launcher_monochrome)
-            item(1, stringResource(R.string.ui_tab), R.drawable.ui)
-            item(2, stringResource(R.string.player_appearance), R.drawable.color_palette)
-            item(3, if (!isYouTubeLoggedIn()) stringResource(R.string.ai_recommendations)
+            item(1, if (!isYouTubeLoggedIn()) stringResource(R.string.ai_recommendations)
             else stringResource(R.string.home), if (!isYouTubeLoggedIn()) R.drawable.sparkles
             else R.drawable.ytmusic)
-            item(4, stringResource(R.string.tab_data), R.drawable.server)
-            item(5, stringResource(R.string.tab_accounts), R.drawable.person)
-            item(6, stringResource(R.string.tab_network), R.drawable.network)
-            item(7, stringResource(R.string.tab_miscellaneous), R.drawable.equalizer)
-            item(8, stringResource(R.string.about), R.drawable.information)
+            item(2, stringResource(R.string.tab_data), R.drawable.server)
+            item(3, stringResource(R.string.tab_accounts), R.drawable.person)
+            item(4, stringResource(R.string.tab_network), R.drawable.network)
+            item(5, stringResource(R.string.tab_miscellaneous), R.drawable.equalizer)
+            item(6, stringResource(R.string.about), R.drawable.information)
 
         }
     ) { currentTabIndex ->
         saveableStateHolder.SaveableStateProvider(currentTabIndex) {
             when (currentTabIndex) {
                 0 -> GeneralSettings(navController = navController)
-                1 -> UiSettings(navController = navController)
-                2 -> AppearanceSettings(navController = navController)
-                3 -> AIRecommendationSettings(navController = navController)
-                4 -> DataSettings()
-                5 -> AccountsSettings()
-                6 -> NetworkSettings(navController = navController)
-                7 -> OtherSettings()
-                8 -> About()
+                1 -> AIRecommendationSettings(navController = navController)
+                2 -> DataSettings()
+                3 -> AccountsSettings()
+                4 -> NetworkSettings(navController = navController)
+                5 -> OtherSettings()
+                6 -> About()
 
             }
         }

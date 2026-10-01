@@ -4,6 +4,7 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -386,6 +387,8 @@ fun HomeSongs(
         onRecommendationsLoadingChange(false)
     }
 
+    var visibleCount by remember { mutableStateOf(50) }
+
     LaunchedEffect( items, search.inputValue, isRecommendationEnabled, relatedSongsPositions ) {
         val filteredItems = items
              .toMutableList()
@@ -408,6 +411,7 @@ fun HomeSongs(
 
         itemsOnDisplay.clear()
         itemsOnDisplay.addAll(filteredItems)
+        visibleCount = 50
     }
 
     LaunchedEffect( relatedSongs.size, isRecommendationEnabled ) {
@@ -552,7 +556,7 @@ fun HomeSongs(
             ) { SongItemPlaceholder() }
 
         itemsIndexed(
-            items = itemsOnDisplay,
+            items = itemsOnDisplay.take(visibleCount),
             key = { index, song -> "${song.id.ifBlank { "home_song" }}_$index" }
         ) { index, song ->
             val mediaItem = song.asMediaItem
@@ -645,6 +649,23 @@ fun HomeSongs(
             }
 
         }
+
+        if (visibleCount < itemsOnDisplay.size) {
+            item(key = "load_more") {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { visibleCount += 50 }
+                        .padding(horizontal = 16.dp, vertical = 14.dp)
+                ) {
+                    BasicText(
+                        text = context.getString(R.string.music_shorts_load_more),
+                        style = typography().s.semiBold.center.color(colorPalette().accent)
+                    )
+                }
+            }
+        }
         }
 
         if (!isLoading && search.inputValue.isBlank() && alphabetIndex.size > 1 && itemsOnDisplay.size >= 20) {
@@ -654,7 +675,14 @@ fun HomeSongs(
             ) { letter ->
                 alphabetIndex[letter]?.let { songIndex ->
                     coroutineScope.launch {
-                        lazyListState.animateScrollToItem(songIndex + listHeaderOffset)
+                        if (songIndex >= visibleCount) {
+                            visibleCount = ((songIndex / 50) + 1) * 50
+                        }
+                        val target = songIndex + listHeaderOffset
+                        while (lazyListState.layoutInfo.totalItemsCount <= target) {
+                            delay(16)
+                        }
+                        lazyListState.animateScrollToItem(target)
                     }
                 }
             }

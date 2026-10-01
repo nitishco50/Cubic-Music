@@ -3,6 +3,7 @@ package app.it.fast4x.rimusic.ui.screens.player.components
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
@@ -60,7 +64,9 @@ fun YoutubePlayer(
     showPlayer: Boolean = true,
     syncPlayer: Player? = null,
     onCurrentSecond: (second: Float) -> Unit,
-    onSwitchToAudioPlayer: () -> Unit
+    onSwitchToAudioPlayer: () -> Unit,
+    isFullscreen: Boolean = false,
+    onFullscreenToggle: (() -> Unit)? = null
 ) {
     if (!showPlayer) return
 
@@ -217,7 +223,12 @@ fun YoutubePlayer(
                 AndroidView(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                        .then(
+                            if (isFullscreen) Modifier
+                            else Modifier.clip(
+                                RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                            )
+                        )
                         .zIndex(2f),
                     factory = {
                         PlayerView(it).apply {
@@ -251,6 +262,35 @@ fun YoutubePlayer(
                     title = "Video unavailable",
                     subtitle = "This video stream could not be resolved right now. Audio playback is still available.",
                     isLoading = false
+                )
+            }
+        }
+
+        if (onFullscreenToggle != null) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 12.dp, end = 12.dp)
+                    .size(width = 50.dp, height = 36.dp)
+                    .background(
+                        color = Color.Black.copy(alpha = 0.62f),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .zIndex(3f)
+                    .clickable(onClick = onFullscreenToggle)
+            ) {
+                Image(
+                    painter = painterResource(
+                        if (isFullscreen) R.drawable.baseline_fullscreen_exit_24
+                        else R.drawable.baseline_fullscreen_24
+                    ),
+                    contentDescription = stringResource(
+                        if (isFullscreen) R.string.exit_full_screen
+                        else R.string.full_screen
+                    ),
+                    colorFilter = ColorFilter.tint(Color.White),
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }

@@ -441,7 +441,7 @@ fun GeneralSettings(
                         onOpenDebugSettings = {
                             navController.currentBackStackEntry
                                 ?.savedStateHandle
-                                ?.set("settings_tab_index", 7)
+                                ?.set("settings_tab_index", 5)
                             navController.navigate(app.it.fast4x.rimusic.enums.NavRoutes.settings.name)
                         }
                     )

@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 
 @Suppress("ClassName")
 object Dimensions {
-    val itemsVerticalPadding = 8.dp
+    val itemsVerticalPadding = 4.dp
 
     val navigationRailWidth = 50.dp
     val navigationRailWidthLandscape = 128.dp
@@ -30,7 +30,7 @@ object Dimensions {
     object thumbnails {
         val album = 128.dp
         val artist = 128.dp
-        val song = 54.dp
+        val song = 40.dp
         val playlist = album
 
         object player {

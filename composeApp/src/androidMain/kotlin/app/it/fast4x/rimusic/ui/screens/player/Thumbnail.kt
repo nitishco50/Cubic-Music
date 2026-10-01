@@ -108,6 +108,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import app.it.fast4x.rimusic.utils.isLandscape
 import app.it.fast4x.rimusic.utils.rememberPreference
 import app.it.fast4x.rimusic.utils.playerVideoModeActiveKey
+import app.it.fast4x.rimusic.utils.VideoFullscreen
 import app.it.fast4x.rimusic.utils.showButtonPlayerVideoKey
 import app.it.fast4x.rimusic.utils.showCoverThumbnailAnimationKey
 import app.it.fast4x.rimusic.utils.showlyricsthumbnailKey
@@ -1082,14 +1083,22 @@ fun Thumbnail(
             modifier = modifierUiType
         ) {
             if (showthumbnail) {
-                if (showVideoButton && showVideo && resolvedVideoId != null) {
+                if (showVideoButton && showVideo && resolvedVideoId != null && !VideoFullscreen.active) {
                     YoutubePlayer(
                         ytVideoId = resolvedVideoId,
                         lifecycleOwner = lifecycleOwner,
                         showPlayer = true,
                         syncPlayer = player,
                         onCurrentSecond = {},
-                        onSwitchToAudioPlayer = { showVideo = false }
+                        onSwitchToAudioPlayer = { showVideo = false },
+                        onFullscreenToggle = {
+                            VideoFullscreen.set(
+                                context as? android.app.Activity,
+                                true,
+                                resolvedVideoId,
+                                player.currentMediaItem?.mediaId
+                            )
+                        }
                     )
                 } else if ((!isShowingLyrics && !isShowingVisualizer) || (isShowingVisualizer && showvisthumbnail) || (isShowingLyrics && showlyricsthumbnail))
                     if (artImageAvailable) {

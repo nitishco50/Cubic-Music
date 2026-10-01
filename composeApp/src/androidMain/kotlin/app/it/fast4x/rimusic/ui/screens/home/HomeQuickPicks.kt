@@ -1961,7 +1961,7 @@ fun HomeQuickPicks(
                     onOpenAccountsSettings = {
                         navController.currentBackStackEntry
                             ?.savedStateHandle
-                            ?.set("settings_tab_index", 5)
+                            ?.set("settings_tab_index", 3)
                         navController.navigate(NavRoutes.settings.name)
                     }
                 )
@@ -2251,7 +2251,7 @@ fun HomeQuickPicks(
                             onOpenAboutUpdate = {
                                 navController.currentBackStackEntry
                                     ?.savedStateHandle
-                                    ?.set("settings_tab_index", 8)
+                                    ?.set("settings_tab_index", 6)
                                 navController.navigate(NavRoutes.settings.name)
                             }
                         )

@@ -182,31 +182,22 @@ fun HomeScreen(
                         navController.navigate(route = "${NavRoutes.playlist.name}/$id")
                     }
 
-                    if (UiType.Apple.isCurrent()) {
-                        AppleHomeScreen(
-                            navController = navController,
-                            onAlbumClick = onAlbum,
-                            onArtistClick = onArtist,
-                            onPlaylistClick = onPlaylist,
-                        )
-                    } else {
-                        HomeQuickPicks(
-                            onAlbumClick = onAlbum,
-                            onArtistClick = onArtist,
-                            onPlaylistClick = onPlaylist,
-                            onSearchClick = {
-                                navController.navigate(NavRoutes.search.name)
-                            },
-                            onMoodClick = { mood ->
-                                navController.currentBackStackEntry?.savedStateHandle?.set("mood", mood.toUiMood())
-                                navController.navigate(NavRoutes.mood.name)
-                            },
-                            onSettingsClick = {
-                                navController.navigate(NavRoutes.settings.name)
-                            },
-                            navController = navController
-                        )
-                    }
+                    HomeQuickPicks(
+                        onAlbumClick = onAlbum,
+                        onArtistClick = onArtist,
+                        onPlaylistClick = onPlaylist,
+                        onSearchClick = {
+                            navController.navigate(NavRoutes.search.name)
+                        },
+                        onMoodClick = { mood ->
+                            navController.currentBackStackEntry?.savedStateHandle?.set("mood", mood.toUiMood())
+                            navController.navigate(NavRoutes.mood.name)
+                        },
+                        onSettingsClick = {
+                            navController.navigate(NavRoutes.settings.name)
+                        },
+                        navController = navController
+                    )
                 }
 
                 1 -> HomeSongsScreen(navController)

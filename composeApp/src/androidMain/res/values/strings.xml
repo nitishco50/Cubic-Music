@@ -470,6 +470,7 @@
 <string name="show_next_songs_in_player">Show next song queue</string>
 <string name="show_remaining_song_time">Show remaining song duration</string>
 <string name="full_screen">Full screen</string>
+<string name="exit_full_screen">Exit full screen</string>
 <string name="click_lyrics_text">Jump to lyrics by pressing the line</string>
 <string name="folder_that_will_show_when_you_open_on_device_page">Folder shown for on device songs</string>
 <string name="folder_was_not_found">Folder was not found</string>
