@@ -545,21 +545,27 @@ fun plainLyricsFromTimedText(timedLyrics: String?): String? =
 fun pickBestLrcLibTrack(
     tracks: List<it.fast4x.lrclib.models.Track>,
     title: String,
-    durationMs: Long
+    artist: String? = null,
+    durationMs: Long,
+    album: String? = null
 ): it.fast4x.lrclib.models.Track? {
     if (tracks.isEmpty()) return null
 
     val normalizedTitle = cleanPrefix(title).trim().lowercase()
+    val normalizedArtist = artist?.trim()?.lowercase()?.ifBlank { null }
+    val normalizedAlbum = album?.trim()?.lowercase()?.ifBlank { null }
     val durationSeconds = (durationMs / 1000L).coerceAtLeast(0L)
 
     return tracks.minByOrNull { track ->
         val normalizedTrackTitle = cleanPrefix(track.trackName).trim().lowercase()
         val durationDelta = (track.duration - durationSeconds).absoluteValue
         val titlePenalty = if (normalizedTrackTitle == normalizedTitle) 0L else 1_000L
+        val artistPenalty = if (normalizedArtist == null || track.artistName.trim().lowercase() == normalizedArtist) 0L else 500L
+        val albumPenalty = if (normalizedAlbum == null || track.albumName.trim().lowercase() == normalizedAlbum) 0L else 100L
         val syncedPenalty = if (track.syncedLyrics.isNullOrBlank()) 500L else 0L
         val plainPenalty = if (track.plainLyrics.isNullOrBlank()) 250L else 0L
 
-        durationDelta + titlePenalty + syncedPenalty + plainPenalty
+        durationDelta + titlePenalty + artistPenalty + albumPenalty + syncedPenalty + plainPenalty
     }
 }
 

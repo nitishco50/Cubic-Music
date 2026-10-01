@@ -168,7 +168,7 @@ object QuickPicksRepository {
         val relatedAll = mutableListOf<Song>()
         for (seed in seeds) {
             val related = runCatchingOrNull {
-                Innertube.relatedPage(NextBody(videoId = seed.id)).getOrNull()
+                Innertube.relatedPage(NextBody(videoId = seed.id))?.getOrNull()
             }?.songs.orEmpty()
                 .map { it.asSong }
                 .filter { isYouTubeVideoId(it.id) && it.title.isNotBlank() }
