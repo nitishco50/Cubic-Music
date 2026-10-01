@@ -199,7 +199,7 @@ android {
         /*
                 UNIVERSAL VARIABLES
          */
-        buildConfigField( "Boolean", "IS_AUTOUPDATE", "true" )
+        buildConfigField( "Boolean", "IS_AUTOUPDATE", "false" )
         buildConfigField( "String", "APP_NAME", "\"$APP_NAME\"" )
         buildConfigField( "String", "WEATHER_API_KEY", "\"${localProperty("weather_api_key")}\"" )
         buildConfigField( "String", "OMADA_API", "\"${localProperty("omada_api", "https://yt.omada.cafe/api/v1/search")}\"" )
