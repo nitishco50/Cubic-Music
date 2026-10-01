@@ -322,7 +322,7 @@ fun DefaultAppearanceSettings() {
     showButtonPlayerSystemEqualizer = false
     var showButtonPlayerDiscover by rememberPreference(showButtonPlayerDiscoverKey, false)
     showButtonPlayerDiscover = false
-    var showButtonPlayerVideo by rememberPreference(showButtonPlayerVideoKey, false)
+    var showButtonPlayerVideo by rememberPreference(showButtonPlayerVideoKey, true)
     showButtonPlayerVideo = false
     var navigationBarPosition by rememberPreference(
         navigationBarPositionKey,
@@ -503,7 +503,7 @@ fun AppearanceSettings(
         false
     )
     var showButtonPlayerDiscover by rememberPreference(showButtonPlayerDiscoverKey, false)
-    var showButtonPlayerVideo by rememberPreference(showButtonPlayerVideoKey, false)
+    var showButtonPlayerVideo by rememberPreference(showButtonPlayerVideoKey, true)
 
     val navigationBarPosition by rememberPreference(
         navigationBarPositionKey,

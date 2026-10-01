@@ -2259,6 +2259,284 @@ fun HomeQuickPicks(
                     }
                 }                // ===== END NOTIFICATION MESSAGE SECTION =====
 
+                if (showCharts) {
+                    chartsPageInit?.trending?.takeIf { it.isNotEmpty() }?.let { trendingSongs ->
+                        BasicText(
+                            text = stringResource(R.string.trending_now),
+                            style = typography().l.semiBold,
+                            modifier = sectionTextModifier
+                        )
+
+                        LazyHorizontalGrid(
+                            rows = GridCells.Fixed(2),
+                            modifier = Modifier
+                                .height(130.dp)
+                                .fillMaxWidth(),
+                            state = rememberLazyGridState(),
+                            flingBehavior = ScrollableDefaults.flingBehavior(),
+                        ) {
+                            itemsIndexed(
+                                items = if (parentalControlEnabled)
+                                    trendingSongs.filter {
+                                        !it.asSong.title.startsWith(EXPLICIT_PREFIX)
+                                    }.distinctBy { it.key }
+                                else trendingSongs.distinctBy { it.key },
+                                key = { index, song -> homeQuickSongKey(song, index) }
+                            ) { index, song ->
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(start = 16.dp)
+                                ) {
+                                    BasicText(
+                                        text = "${index + 1}",
+                                        style = typography().l.bold.center.color(
+                                            colorPalette().text
+                                        ),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    SongItem(
+                                        song = song,
+                                        onDownloadClick = {},
+                                        downloadState = Download.STATE_STOPPED,
+                                        thumbnailSizePx = songThumbnailSizePx,
+                                        thumbnailSizeDp = songThumbnailSizeDp,
+                                        modifier = Modifier
+                                            .clickable(onClick = {
+                                                refreshScope.launch {
+                                                    val mediaItems = trendingSongs.map { preferredCachedMediaItem(it) }
+                                                    val mediaItemIndex = mediaItems.indexOfFirst { it.mediaId == song.key }
+                                                    binder?.stopRadio()
+                                                    PlaybackContextStore.set(context.getString(R.string.playing_from_quick_picks), context.getString(R.string.trending_now))
+                                                    binder?.player?.forcePlayAtIndex(
+                                                        mediaItems,
+                                                        mediaItemIndex.takeIf { it >= 0 } ?: 0
+                                                    )
+                                                }
+                                            })
+                                            .width(itemWidth),
+                                        disableScrollingText = disableScrollingText,
+                                        isNowPlaying = binder?.player?.isNowPlaying(song.key) ?: false
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (showPlaylistMightLike && hasTastePlaylistRecommendations) {
+                    BasicText(
+                        text = stringResource(R.string.playlists_you_might_like),
+                        style = typography().l.semiBold,
+                        modifier = sectionTextModifier
+                    )
+
+                    LazyRow(contentPadding = endPaddingValues) {
+                        when {
+                            uniqueRadioPlaylistItems.isNotEmpty() -> items(
+                                items = uniqueRadioPlaylistItems.take(18),
+                                key = { item -> homeQuickPlaylistKey(item) },
+                            ) { item ->
+                                PlaylistItem(
+                                    playlist = item,
+                                    thumbnailSizePx = playlistThumbnailSizePx,
+                                    thumbnailSizeDp = playlistThumbnailSizeDp,
+                                    alternative = true,
+                                    showSongsCount = false,
+                                    isYoutubePlaylist = true,
+                                    modifier = Modifier.clickable { onPlaylistClick(item.key) },
+                                    disableScrollingText = disableScrollingText
+                                )
+                            }
+
+                            uniqueSessionPlaylistItems.isNotEmpty() -> items(
+                                items = uniqueSessionPlaylistItems.take(18),
+                                key = { item -> item.playlistId.ifBlank { item.browseId } }
+                            ) { item ->
+                                YtmHomeCard(
+                                    title = item.title,
+                                    subtitle = item.subtitle,
+                                    thumbnailUrl = item.thumbnailUrl.ifBlank { item.thumbnail },
+                                    modifier = Modifier.clickable {
+                                        item.playlistId.ifBlank { item.browseId }
+                                            .takeIf(String::isNotBlank)
+                                            ?.let(onPlaylistClick)
+                                    }
+                                )
+                            }
+
+                            else -> items(
+                                items = uniqueGuestPlaylistItems.take(18),
+                                key = { item -> item.key }
+                            ) { item ->
+                                PlaylistItem(
+                                    playlist = item,
+                                    thumbnailSizePx = playlistThumbnailSizePx,
+                                    thumbnailSizeDp = playlistThumbnailSizeDp,
+                                    alternative = true,
+                                    showSongsCount = false,
+                                    isYoutubePlaylist = true,
+                                    modifier = Modifier.clickable { onPlaylistClick(item.key) },
+                                    disableScrollingText = disableScrollingText
+                                )
+                            }
+                        }
+                    }
+                }
+
+                if (showMoodsAndGenres)
+                    discoverPageInit?.let { page ->
+
+                        if (page.moods.isNotEmpty()) {
+
+                            Title(
+                                title = stringResource(R.string.moods_and_genres),
+                                onClick = { navController.navigate(NavRoutes.moodsPage.name) },
+                            )
+
+                            LazyHorizontalGrid(
+                                state = moodAngGenresLazyGridState,
+                                rows = GridCells.Fixed(4),
+                                flingBehavior = ScrollableDefaults.flingBehavior(),
+                                contentPadding = endPaddingValues,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(Dimensions.itemsVerticalPadding * 4 * 8)
+                            ) {
+                                items(
+                                    items = page.moods.sortedBy { it.title },
+                                    key = { it.endpoint.params ?: it.title }
+                                ) {
+                                    MoodItemColored(
+                                        mood = it,
+                                        onClick = { it.endpoint.browseId?.let { _ -> onMoodClick(it) } },
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                val monthlyPlaylists by remember {
+                    Database.playlistTable
+                        .allAsPreview()
+                        .distinctUntilChanged()
+                        .map { list ->
+                            list.filter {
+                                it.playlist.name.startsWith(MONTHLY_PREFIX, true)
+                            }
+                        }
+                }.collectAsState(emptyList(), Dispatchers.IO)
+
+                if (showMonthlyPlaylistInQuickPicks)
+                    monthlyPlaylists.let { playlists ->
+                        if (playlists.isNotEmpty()) {
+                            BasicText(
+                                text = stringResource(R.string.monthly_playlists),
+                                style = typography().l.semiBold,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .padding(top = 24.dp, bottom = 8.dp)
+                            )
+
+                            LazyRow(contentPadding = endPaddingValues) {
+                                items(
+                                    items = playlists.distinctBy { it.playlist.id },
+                                    key = { it.playlist.id }
+                                ) { playlist ->
+                                    PlaylistItem(
+                                        playlist = playlist,
+                                        thumbnailSizeDp = playlistThumbnailSizeDp,
+                                        thumbnailSizePx = playlistThumbnailSizePx,
+                                        alternative = true,
+                                        modifier = Modifier
+                                            .animateItem(
+                                                fadeInSpec = null,
+                                                fadeOutSpec = null
+                                            )
+                                            .fillMaxSize()
+                                            .clickable(onClick = { navController.navigate(route = "${NavRoutes.localPlaylist.name}/${playlist.playlist.id}") }),
+                                        disableScrollingText = disableScrollingText,
+                                        isYoutubePlaylist = playlist.playlist.isYoutubePlaylist,
+                                        isEditable = playlist.playlist.isEditable
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+
+                if (showSimilarArtists && hasTasteArtistRecommendations) {
+                    BasicText(
+                        text = stringResource(R.string.artists_for_your_taste),
+                        style = typography().l.semiBold,
+                        modifier = sectionTextModifier
+                    )
+
+                    LazyRow(contentPadding = endPaddingValues) {
+                        items(
+                            items = tasteInnertubeArtists.take(18),
+                            key = { artist -> "taste_innertube_${artist.key}" },
+                        ) { artist ->
+                            ArtistItem(
+                                artist = artist,
+                                thumbnailSizePx = artistThumbnailSizePx,
+                                thumbnailSizeDp = artistThumbnailSizeDp,
+                                alternative = true,
+                                modifier = Modifier.clickable { onArtistClick(artist.key) },
+                                disableScrollingText = disableScrollingText
+                            )
+                        }
+
+                        items(
+                            items = tasteSessionArtistItems.take(
+                                (18 - tasteInnertubeArtists.size).coerceAtLeast(0)
+                            ),
+                            key = { item -> "taste_session_${item.artistDestinationId()}" },
+                        ) { item ->
+                            YtmHomeCard(
+                                title = item.title,
+                                subtitle = item.subtitle.ifBlank { item.artistsText },
+                                thumbnailUrl = item.thumbnailUrl.ifBlank { item.thumbnail },
+                                imageWidth = 104.dp,
+                                imageHeight = 104.dp,
+                                rounded = false,
+                                modifier = Modifier.clickable {
+                                    onArtistClick(item.artistDestinationId())
+                                }
+                            )
+                        }
+                    }
+                }
+
+                if (showSimilarArtists) {
+                    similarArtistShelves.forEach { shelf ->
+                        BasicText(
+                            text = stringResource(R.string.similar_to_artist, shelf.seedName),
+                            style = typography().l.semiBold,
+                            modifier = sectionTextModifier
+                        )
+
+                        LazyRow(contentPadding = endPaddingValues) {
+                            items(
+                                items = shelf.artists,
+                                key = { artist -> "similar_${shelf.seedName}_${artist.key}" },
+                            ) { artist ->
+                                ArtistItem(
+                                    artist = artist,
+                                    thumbnailSizePx = artistThumbnailSizePx,
+                                    thumbnailSizeDp = artistThumbnailSizeDp,
+                                    alternative = true,
+                                    modifier = Modifier.clickable { onArtistClick(artist.key) },
+                                    disableScrollingText = disableScrollingText
+                                )
+                            }
+                        }
+                    }
+                }
+
                 YtmHomeFeedSections(
                     sections = newReleaseApiSections,
                     endPaddingValues = endPaddingValues,
@@ -2452,134 +2730,6 @@ fun HomeQuickPicks(
                         onPlaylistClick = onPlaylistClick,
                     )
                 }
-                if (showSimilarArtists && hasTasteArtistRecommendations) {
-                    BasicText(
-                        text = stringResource(R.string.artists_for_your_taste),
-                        style = typography().l.semiBold,
-                        modifier = sectionTextModifier
-                    )
-
-                    LazyRow(contentPadding = endPaddingValues) {
-                        items(
-                            items = tasteInnertubeArtists.take(18),
-                            key = { artist -> "taste_innertube_${artist.key}" },
-                        ) { artist ->
-                            ArtistItem(
-                                artist = artist,
-                                thumbnailSizePx = artistThumbnailSizePx,
-                                thumbnailSizeDp = artistThumbnailSizeDp,
-                                alternative = true,
-                                modifier = Modifier.clickable { onArtistClick(artist.key) },
-                                disableScrollingText = disableScrollingText
-                            )
-                        }
-
-                        items(
-                            items = tasteSessionArtistItems.take(
-                                (18 - tasteInnertubeArtists.size).coerceAtLeast(0)
-                            ),
-                            key = { item -> "taste_session_${item.artistDestinationId()}" },
-                        ) { item ->
-                            YtmHomeCard(
-                                title = item.title,
-                                subtitle = item.subtitle.ifBlank { item.artistsText },
-                                thumbnailUrl = item.thumbnailUrl.ifBlank { item.thumbnail },
-                                imageWidth = 104.dp,
-                                imageHeight = 104.dp,
-                                rounded = false,
-                                modifier = Modifier.clickable {
-                                    onArtistClick(item.artistDestinationId())
-                                }
-                            )
-                        }
-                    }
-                }
-
-                if (showSimilarArtists) {
-                    similarArtistShelves.forEach { shelf ->
-                        BasicText(
-                            text = stringResource(R.string.similar_to_artist, shelf.seedName),
-                            style = typography().l.semiBold,
-                            modifier = sectionTextModifier
-                        )
-
-                        LazyRow(contentPadding = endPaddingValues) {
-                            items(
-                                items = shelf.artists,
-                                key = { artist -> "similar_${shelf.seedName}_${artist.key}" },
-                            ) { artist ->
-                                ArtistItem(
-                                    artist = artist,
-                                    thumbnailSizePx = artistThumbnailSizePx,
-                                    thumbnailSizeDp = artistThumbnailSizeDp,
-                                    alternative = true,
-                                    modifier = Modifier.clickable { onArtistClick(artist.key) },
-                                    disableScrollingText = disableScrollingText
-                                )
-                            }
-                        }
-                    }
-                }
-
-                if (showPlaylistMightLike && hasTastePlaylistRecommendations) {
-                    BasicText(
-                        text = stringResource(R.string.playlists_you_might_like),
-                        style = typography().l.semiBold,
-                        modifier = sectionTextModifier
-                    )
-
-                    LazyRow(contentPadding = endPaddingValues) {
-                        when {
-                            uniqueRadioPlaylistItems.isNotEmpty() -> items(
-                                items = uniqueRadioPlaylistItems.take(18),
-                                key = { item -> homeQuickPlaylistKey(item) },
-                            ) { item ->
-                                PlaylistItem(
-                                    playlist = item,
-                                    thumbnailSizePx = playlistThumbnailSizePx,
-                                    thumbnailSizeDp = playlistThumbnailSizeDp,
-                                    alternative = true,
-                                    showSongsCount = false,
-                                    isYoutubePlaylist = true,
-                                    modifier = Modifier.clickable { onPlaylistClick(item.key) },
-                                    disableScrollingText = disableScrollingText
-                                )
-                            }
-
-                            uniqueSessionPlaylistItems.isNotEmpty() -> items(
-                                items = uniqueSessionPlaylistItems.take(18),
-                                key = { item -> item.playlistId.ifBlank { item.browseId } }
-                            ) { item ->
-                                YtmHomeCard(
-                                    title = item.title,
-                                    subtitle = item.subtitle,
-                                    thumbnailUrl = item.thumbnailUrl.ifBlank { item.thumbnail },
-                                    modifier = Modifier.clickable {
-                                        item.playlistId.ifBlank { item.browseId }
-                                            .takeIf(String::isNotBlank)
-                                            ?.let(onPlaylistClick)
-                                    }
-                                )
-                            }
-
-                            else -> items(
-                                items = uniqueGuestPlaylistItems.take(18),
-                                key = { item -> item.key }
-                            ) { item ->
-                                PlaylistItem(
-                                    playlist = item,
-                                    thumbnailSizePx = playlistThumbnailSizePx,
-                                    thumbnailSizeDp = playlistThumbnailSizeDp,
-                                    alternative = true,
-                                    showSongsCount = false,
-                                    isYoutubePlaylist = true,
-                                    modifier = Modifier.clickable { onPlaylistClick(item.key) },
-                                    disableScrollingText = disableScrollingText
-                                )
-                            }
-                        }
-                    }
-                }
                 YtmHomeFeedSections(
                     sections = guestQuickPickSections,
                     endPaddingValues = endPaddingValues,
@@ -2590,88 +2740,6 @@ fun HomeQuickPicks(
                 )
 
 
-
-                if (showMoodsAndGenres)
-                    discoverPageInit?.let { page ->
-
-                        if (page.moods.isNotEmpty()) {
-
-                            Title(
-                                title = stringResource(R.string.moods_and_genres),
-                                onClick = { navController.navigate(NavRoutes.moodsPage.name) },
-                            )
-
-                            LazyHorizontalGrid(
-                                state = moodAngGenresLazyGridState,
-                                rows = GridCells.Fixed(4),
-                                flingBehavior = ScrollableDefaults.flingBehavior(),
-                                contentPadding = endPaddingValues,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(Dimensions.itemsVerticalPadding * 4 * 8)
-                            ) {
-                                items(
-                                    items = page.moods.sortedBy { it.title },
-                                    key = { it.endpoint.params ?: it.title }
-                                ) {
-                                    MoodItemColored(
-                                        mood = it,
-                                        onClick = { it.endpoint.browseId?.let { _ -> onMoodClick(it) } },
-                                        modifier = Modifier
-                                            .padding(4.dp)
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                val monthlyPlaylists by remember {
-                    Database.playlistTable
-                        .allAsPreview()
-                        .distinctUntilChanged()
-                        .map { list ->
-                            list.filter {
-                                it.playlist.name.startsWith(MONTHLY_PREFIX, true)
-                            }
-                        }
-                }.collectAsState(emptyList(), Dispatchers.IO)
-
-                if (showMonthlyPlaylistInQuickPicks)
-                    monthlyPlaylists.let { playlists ->
-                        if (playlists.isNotEmpty()) {
-                            BasicText(
-                                text = stringResource(R.string.monthly_playlists),
-                                style = typography().l.semiBold,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .padding(top = 24.dp, bottom = 8.dp)
-                            )
-
-                            LazyRow(contentPadding = endPaddingValues) {
-                                items(
-                                    items = playlists.distinctBy { it.playlist.id },
-                                    key = { it.playlist.id }
-                                ) { playlist ->
-                                    PlaylistItem(
-                                        playlist = playlist,
-                                        thumbnailSizeDp = playlistThumbnailSizeDp,
-                                        thumbnailSizePx = playlistThumbnailSizePx,
-                                        alternative = true,
-                                        modifier = Modifier
-                                            .animateItem(
-                                                fadeInSpec = null,
-                                                fadeOutSpec = null
-                                            )
-                                            .fillMaxSize()
-                                            .clickable(onClick = { navController.navigate(route = "${NavRoutes.localPlaylist.name}/${playlist.playlist.id}") }),
-                                        disableScrollingText = disableScrollingText,
-                                        isYoutubePlaylist = playlist.playlist.isYoutubePlaylist,
-                                        isEditable = playlist.playlist.isEditable
-                                    )
-                                }
-                            }
-                        }
-                    }
 
                 if (showCharts) {
 

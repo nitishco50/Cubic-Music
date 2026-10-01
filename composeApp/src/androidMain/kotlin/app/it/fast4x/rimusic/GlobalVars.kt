@@ -41,7 +41,7 @@ fun context(): Context = Dependencies.application
 
 fun ytAccountName() = appContext().preferences.getString(ytAccountNameKey, "")
 fun ytAccountThumbnail() = appContext().preferences.getString(ytAccountThumbnailKey, "")
-fun isVideoEnabled() = appContext().preferences.getBoolean(showButtonPlayerVideoKey, false)
+fun isVideoEnabled() = appContext().preferences.getBoolean(showButtonPlayerVideoKey, true)
 
 fun isConnectionMeteredEnabled() = appContext().preferences.getBoolean(isConnectionMeteredEnabledKey, true)
 fun isAutoSyncEnabled() = appContext().preferences.getBoolean(autosyncKey, false)

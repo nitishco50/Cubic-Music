@@ -117,7 +117,7 @@ fun SearchResultScreen(
 
     val hapticFeedback = LocalHapticFeedback.current
 
-    val isVideoEnabled = LocalContext.current.preferences.getBoolean(showButtonPlayerVideoKey, false)
+    val isVideoEnabled = LocalContext.current.preferences.getBoolean(showButtonPlayerVideoKey, true)
     val parentalControlEnabled by rememberPreference(parentalControlEnabledKey, false)
 
     val disableScrollingText by rememberPreference(disableScrollingTextKey, false)

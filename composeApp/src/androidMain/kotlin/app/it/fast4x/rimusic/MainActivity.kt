@@ -1036,7 +1036,7 @@ class MainActivity :
 
                             val isVideo = binder?.player?.currentMediaItem?.isVideo ?: false
                             val isVideoEnabled =
-                                preferences.getBoolean(showButtonPlayerVideoKey, false)
+                                preferences.getBoolean(showButtonPlayerVideoKey, true)
 
                             val youtubePlayer: @Composable () -> Unit = {
                                 binder?.player?.currentMediaItem?.mediaId?.let {

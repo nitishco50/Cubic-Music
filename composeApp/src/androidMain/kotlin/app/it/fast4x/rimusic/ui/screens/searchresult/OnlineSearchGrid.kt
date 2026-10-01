@@ -94,7 +94,7 @@ fun OnlineSearchGrid(
     val binder = LocalPlayerServiceBinder.current
     val menuState = LocalMenuState.current
     val hapticFeedback = LocalHapticFeedback.current
-    val isVideoEnabled = remember { context.preferences.getBoolean(showButtonPlayerVideoKey, false) }
+    val isVideoEnabled = remember { context.preferences.getBoolean(showButtonPlayerVideoKey, true) }
 
     val itemContent: @Composable LazyGridItemScope.(Innertube.Item) -> Unit = { item ->
         Column(

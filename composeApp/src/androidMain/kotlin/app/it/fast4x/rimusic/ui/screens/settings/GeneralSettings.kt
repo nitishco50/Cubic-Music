@@ -1236,7 +1236,7 @@ fun GeneralSettings(
                 icon    = R.drawable.comments,
                 content = {
                     var showCommentsButton by rememberPreference("show_comments_button", true)
-                    var showVideoButton by rememberPreference(showButtonPlayerVideoKey, false)
+                    var showVideoButton by rememberPreference(showButtonPlayerVideoKey, true)
                     var showLyricsSourceSwitcher by rememberPreference(showLyricsSourceSwitcherKey, true)
                     var showPlayerPlaybackContext by rememberPreference(showPlayerPlaybackContextKey, true)
                     var showPlayerOutputDevice by rememberPreference(showPlayerOutputDeviceKey, true)

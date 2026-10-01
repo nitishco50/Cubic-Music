@@ -70,7 +70,7 @@ fun ArtistVideos(
     val context = LocalContext.current
 
     val disableScrollingText by rememberPreference(disableScrollingTextKey, false)
-    val isVideoEnabled = context.preferences.getBoolean(showButtonPlayerVideoKey, false)
+    val isVideoEnabled = context.preferences.getBoolean(showButtonPlayerVideoKey, true)
 
     val thumbnailHeightDp = 72.dp
     val thumbnailWidthDp = 128.dp

@@ -909,7 +909,7 @@ fun Thumbnail(
     var showlyricsthumbnail by rememberPreference(showlyricsthumbnailKey, false)
  
     val showCommentsButton by rememberPreference("show_comments_button", true)
-    val showVideoButton by rememberPreference(showButtonPlayerVideoKey, false)
+    val showVideoButton by rememberPreference(showButtonPlayerVideoKey, true)
     var showVideo by rememberPreference(playerVideoModeActiveKey, false)
 
     LaunchedEffect(Unit) {

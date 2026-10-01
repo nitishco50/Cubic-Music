@@ -526,7 +526,7 @@ fun BoxScope.ActionBar(
                     .padding(horizontal = 12.dp)
                     .fillMaxWidth()
             ) {
-                val showButtonPlayerVideo by rememberPreference( showButtonPlayerVideoKey, false )
+                val showButtonPlayerVideo by rememberPreference( showButtonPlayerVideoKey, true )
                 if (showButtonPlayerVideo)
                     IconButton(
                         icon = R.drawable.video,
