@@ -2241,7 +2241,7 @@ fun HomeQuickPicks(
                         }
                     }
 
-                    if (notification.show || hasNewUpdate) {
+                    if (notification.show && !hasNewUpdate) {
                         Spacer(modifier = Modifier.height(16.dp))
                         RemoteConfigQuickPicksCard(
                             notification = notification,

@@ -14,6 +14,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.layout.Arrangement
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -1084,22 +1086,44 @@ fun Thumbnail(
         ) {
             if (showthumbnail) {
                 if (showVideoButton && showVideo && resolvedVideoId != null && !VideoFullscreen.active) {
-                    YoutubePlayer(
-                        ytVideoId = resolvedVideoId,
-                        lifecycleOwner = lifecycleOwner,
-                        showPlayer = true,
-                        syncPlayer = player,
-                        onCurrentSecond = {},
-                        onSwitchToAudioPlayer = { showVideo = false },
-                        onFullscreenToggle = {
-                            VideoFullscreen.set(
-                                context as? android.app.Activity,
-                                true,
-                                resolvedVideoId,
-                                player.currentMediaItem?.mediaId
-                            )
-                        }
-                    )
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        YoutubePlayer(
+                            ytVideoId = resolvedVideoId,
+                            lifecycleOwner = lifecycleOwner,
+                            showPlayer = true,
+                            syncPlayer = player,
+                            onCurrentSecond = {},
+                            onSwitchToAudioPlayer = { showVideo = false },
+                            onFullscreenToggle = {
+                                VideoFullscreen.set(
+                                    context as? android.app.Activity,
+                                    true,
+                                    resolvedVideoId,
+                                    player.currentMediaItem?.mediaId
+                                )
+                            }
+                        )
+                        var videoTapCount by remember { mutableStateOf(0) }
+                        var videoLastTapTime by remember { mutableStateOf(0L) }
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .fillMaxWidth(0.5f)
+                                .height(72.dp)
+                                .pointerInput(resolvedVideoId) {
+                                    detectTapGestures {
+                                        val now = System.currentTimeMillis()
+                                        videoTapCount =
+                                            if (now - videoLastTapTime <= 600L) videoTapCount + 1 else 1
+                                        videoLastTapTime = now
+                                        if (videoTapCount >= 3) {
+                                            videoTapCount = 0
+                                            showVideo = false
+                                        }
+                                    }
+                                }
+                        )
+                    }
                 } else if ((!isShowingLyrics && !isShowingVisualizer) || (isShowingVisualizer && showvisthumbnail) || (isShowingLyrics && showlyricsthumbnail))
                     if (artImageAvailable) {
                         if (showCoverThumbnailAnimation)
@@ -1109,11 +1133,18 @@ fun Thumbnail(
                                 modifier = Modifier
                                     .combinedClickable(
                                         onClick = {
-                                        if (thumbnailTapEnabledKey && !showComments) {
-                                            onShowLyrics(true)
-                                            onShowEqualizer(false)
-                                        }
-                                    },
+                                            if (thumbnailTapEnabledKey && !showComments) {
+                                                if (showVideoButton && resolvedVideoId != null) {
+                                                    showComments = false
+                                                    onShowLyrics(false)
+                                                    onShowEqualizer(false)
+                                                    showVideo = true
+                                                } else {
+                                                    onShowLyrics(true)
+                                                    onShowEqualizer(false)
+                                                }
+                                            }
+                                        },
                                         onLongClick = { showThumbnailShareDialog = true }
                                     )
                                     .graphicsLayer { alpha = thumbnailAlpha },
@@ -1127,11 +1158,18 @@ fun Thumbnail(
                                 modifier = Modifier
                                     .combinedClickable(
                                         onClick = {
-                                        if (thumbnailTapEnabledKey && !showComments) {
-                                            onShowLyrics(true)
-                                            onShowEqualizer(false)
-                                        }
-                                    },
+                                            if (thumbnailTapEnabledKey && !showComments) {
+                                                if (showVideoButton && resolvedVideoId != null) {
+                                                    showComments = false
+                                                    onShowLyrics(false)
+                                                    onShowEqualizer(false)
+                                                    showVideo = true
+                                                } else {
+                                                    onShowLyrics(true)
+                                                    onShowEqualizer(false)
+                                                }
+                                            }
+                                        },
                                         onLongClick = { showThumbnailShareDialog = true }
                                     )
                                     .fillMaxSize()
@@ -1145,11 +1183,18 @@ fun Thumbnail(
                             modifier = Modifier
                                 .combinedClickable(
                                     onClick = {
-                                    if (thumbnailTapEnabledKey && !showComments) {
-                                        onShowLyrics(true)
-                                        onShowEqualizer(false)
-                                    }
-                                },
+                                        if (thumbnailTapEnabledKey && !showComments) {
+                                            if (showVideoButton && resolvedVideoId != null) {
+                                                showComments = false
+                                                onShowLyrics(false)
+                                                onShowEqualizer(false)
+                                                showVideo = true
+                                            } else {
+                                                onShowLyrics(true)
+                                                onShowEqualizer(false)
+                                            }
+                                        }
+                                    },
                                     onLongClick = { showThumbnailShareDialog = true }
                                 )
                                 .fillMaxSize()

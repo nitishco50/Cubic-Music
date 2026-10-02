@@ -209,8 +209,6 @@ object Updater {
         val results = supervisorScope {
             listOf<suspend () -> UpdateCandidate>(
                 { fetchGithubAtomUpdateCandidate(checkBetaUpdates) },
-                { fetchUpdateBuddyReleaseCandidate(checkBetaUpdates, viaGithubFallback = false) },
-                { fetchUpdateBuddyReleaseCandidate(checkBetaUpdates, viaGithubFallback = true) },
                 { fetchGithubUpdateCandidate(checkBetaUpdates) }
             ).map { fetcher ->
                 async { runCatching { fetcher() } }

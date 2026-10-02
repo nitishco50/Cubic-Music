@@ -44,7 +44,7 @@ object SecureApiConfig {
     }
 
     val githubLatestFullApkUrl: String by lazy {
-        "https://github.com/cybruGhost/Cubic-Music/releases/latest/download/Cubic-Music-full.apk"
+        "https://github.com/nitishco50/Cubic-Music/releases/latest/download/Allomusic-full.apk"
     }
 
     val crystalApiBaseUrl: String by lazy {
