@@ -567,7 +567,7 @@ private fun exportDayLog(context: Context, day: RescueLogDay) {
                 Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_STREAM, uri)
-                    putExtra(Intent.EXTRA_SUBJECT, "Cubic Music rescue log ${day.date}")
+                    putExtra(Intent.EXTRA_SUBJECT, "Allomusic rescue log ${day.date}")
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 },
                 "Export rescue log"

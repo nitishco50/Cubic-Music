@@ -340,7 +340,7 @@ object NewUpdateAvailableDialog {
 
                     Toast.makeText(
                         appContext(),
-                        "Installation could not start. Download the APK directly from Cubic Music.",
+                        "Installation could not start. Download the APK directly from Allomusic.",
                         Toast.LENGTH_LONG
                     ).show()
                     runCatching {

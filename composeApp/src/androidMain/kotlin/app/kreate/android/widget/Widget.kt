@@ -593,7 +593,7 @@ sealed class Widget : GlanceAppWidget() {
                 ) {
                     if (ready) {
                         Text(
-                            text = title.ifBlank { "Cubic Music" },
+                            text = title.ifBlank { "Allomusic" },
                             style = TextStyle(
                                 color = textColor,
                                 fontWeight = FontWeight.Bold,

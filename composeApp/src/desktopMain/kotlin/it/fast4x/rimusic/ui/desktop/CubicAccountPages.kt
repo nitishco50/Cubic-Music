@@ -47,7 +47,7 @@ internal fun CubicProfilePage(libraryCount: Int, downloadCount: Int, onOpenSetti
         ) {
             CubicLogo(66.dp)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                Text("Cubic Music listener", color = CubicColors.Text, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("Allomusic listener", color = CubicColors.Text, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text("Local desktop profile", color = CubicColors.TextSecondary, fontSize = 12.sp)
             }
             CubicActionTile("Settings", Icons.Rounded.Settings, onOpenSettings)
@@ -97,7 +97,7 @@ internal fun CubicSettingsPage(downloadCount: Int, onClearData: () -> Unit) {
     if (confirmClear) AlertDialog(
         onDismissRequest = { confirmClear = false },
         title = { Text("Clear desktop data?") },
-        text = { Text("This removes Cubic Music history, favorites, playlists and downloaded files on this computer. This cannot be undone.") },
+        text = { Text("This removes Allomusic history, favorites, playlists and downloaded files on this computer. This cannot be undone.") },
         confirmButton = { TextButton(onClick = { confirmClear = false; onClearData() }) { Text("Clear", color = CubicColors.Danger) } },
         dismissButton = { TextButton(onClick = { confirmClear = false }) { Text("Cancel") } }
     )

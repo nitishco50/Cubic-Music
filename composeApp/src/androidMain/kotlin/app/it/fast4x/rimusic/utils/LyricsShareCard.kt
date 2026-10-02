@@ -203,7 +203,7 @@ suspend fun shareLyricsCard(
             )
             canvas.drawBitmap(it, null, logoRect, null)
         }
-        canvas.drawText("Cubic Music", cardLeft + 98f, cardBottom - 56f, brandPaint)
+        canvas.drawText("Allomusic", cardLeft + 98f, cardBottom - 56f, brandPaint)
         canvas.drawText(
             "\"${takeShareQuote(clippedLyrics)}\"",
             110f,

@@ -3,7 +3,7 @@ package app.it.fast4x.rimusic.utils
 import android.net.Uri
 
 object ExternalUris {
-    private const val CUBIC_PACKAGE_NAME = "com.Cubic.music"
+    private const val CUBIC_PACKAGE_NAME = "allora.allomusic"
     private const val CUBIC_FALLBACK_BASE_URL = "https://thecub.netlify.app/cubicmusic"
 
     fun youtube(videoId: String) = "https://youtube.com/watch?v=$videoId"

@@ -616,7 +616,7 @@ fun ChangeCityDialog(
                     )
 
                     Text(
-                        text = "Cyberghost @2026 Cubic Music",
+                        text = "Cyberghost @2026 Allomusic",
                         style = MaterialTheme.typography.labelSmall.copy(
                             color = textColor.copy(alpha = 0.7f),
                             fontStyle = FontStyle.Italic

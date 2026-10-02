@@ -4004,7 +4004,7 @@ private fun LyricsSharePreviewCard(
                         modifier = Modifier.size(20.dp)
                     )
                     BasicText(
-                        text = "Cubic Music",
+                        text = "Allomusic",
                         style = TextStyle(
                             color = colorPalette().text,
                             fontSize = 13.sp,

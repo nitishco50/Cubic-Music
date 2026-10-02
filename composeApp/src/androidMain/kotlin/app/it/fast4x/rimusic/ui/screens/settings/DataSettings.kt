@@ -569,7 +569,7 @@ if (showKreateDisclaimer) {
                         )
                         Spacer(modifier = Modifier.height(6.dp)) // Reduced from 8dp
                         BasicText(
-                            text = "Kreate exports backups with user_version 28 that crashes Cubic Music. This tool downgrades the version and fixes malformed data.",
+                            text = "Kreate exports backups with user_version 28 that crashes Allomusic. This tool downgrades the version and fixes malformed data.",
                             style = typography().xs.copy(color = colorPalette().text)
                         )
                     }
@@ -703,7 +703,7 @@ if (showKreateDisclaimer) {
                         BasicText(
                             text = "• Fixes malformed Kreate exports\n" +
                                   "• Downgrades from version 28\n" +
-                                  "• Makes it importable to Cubic Music",
+                                  "• Makes it importable to Allomusic",
                             style = typography().xs.copy(color = colorPalette().text)
                         )
                     }

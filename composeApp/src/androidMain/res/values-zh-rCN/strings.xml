@@ -1060,7 +1060,7 @@
   <string name="retry_with_other_sources">重试回放</string>
   <string name="retry_with_other_sources_hint">再次尝试选中的源, 不替换当前歌曲 。</string>
   <string name="redownload_song">重新下载歌曲</string>
-  <string name="redownload_song_hint">此已下载的文件似乎已损坏 。 Cubic Music将清理断开的离线副本并再次下载.</string>
+  <string name="redownload_song_hint">此已下载的文件似乎已损坏 。 Allomusic将清理断开的离线副本并再次下载.</string>
   <string name="settings_assistant_title">设置助理</string>
   <string name="settings_assistant_prompt">你们在找什么? 搜索一个设置名称、特性或问题,我将指向正确的区域。</string>
   <string name="settings_assistant_popup">设置助理</string>
@@ -1393,14 +1393,14 @@
   <string name="downloaded_tools_export_failed">移动已下载的歌曲失败</string>
   <string name="downloaded_tools_no_songs">无法下载歌曲</string>
   <string name="downloaded_tools_export_warning_title">移动已下载的歌曲</string>
-  <string name="downloaded_tools_export_warning_message">选择一个要保存为歌曲数据的文件夹 。 Cubic Music将复制目前下载的歌曲,这样你的更古老的下载被保存下来.</string>
+  <string name="downloaded_tools_export_warning_message">选择一个要保存为歌曲数据的文件夹 。 Allomusic将复制目前下载的歌曲,这样你的更古老的下载被保存下来.</string>
   <string name="downloaded_tools_pick_folder">选择文件夹</string>
   <string name="downloaded_tools_disable_storage_title">关闭自定义存储</string>
-  <string name="downloaded_tools_disable_storage_message">Cubic Music 将切换回原下载缓存. 已经复制到自定义文件夹的任何东西都留在那里, 直到您自己删除它 。</string>
+  <string name="downloaded_tools_disable_storage_message">Allomusic 将切换回原下载缓存. 已经复制到自定义文件夹的任何东西都留在那里, 直到您自己删除它 。</string>
   <string name="downloaded_tools_disable_storage_progress">恢复原始下载缓存</string>
   <string name="downloaded_tools_disable_storage_done">自定义下载存储已关闭</string>
   <string name="downloaded_tools_copy_existing_title">也移动已下载的旧歌吗 ?</string>
-  <string name="downloaded_tools_copy_existing_message">未来的下载会继续使用安全的内部下载缓存,也会被镜像到所选文件夹. 您是否也希望 Cubic Music 将您已下载的旧歌曲移入文件夹 ?</string>
+  <string name="downloaded_tools_copy_existing_message">未来的下载会继续使用安全的内部下载缓存,也会被镜像到所选文件夹. 您是否也希望 Allomusic 将您已下载的旧歌曲移入文件夹 ?</string>
   <string name="downloaded_tools_copy_existing_progress">将已下载的旧歌移入选中的文件夹</string>
   <string name="downloaded_tools_copy_existing_confirm">移动旧歌</string>
   <string name="downloaded_tools_future_only">仅指未来</string>
@@ -1429,7 +1429,7 @@
   <string name="app_announcements_channel_name">通知</string>
   <string name="app_announcements_channel_description">更新、推广和自定义应用程序消息</string>
   <string name="cshare_title">股份</string>
-  <string name="cshare_create_description">创建一个私人播放列表,邀请在6小时内到期。 朋友可以在Cubic Music中打开并用其细节来导入歌曲.</string>
+  <string name="cshare_create_description">创建一个私人播放列表,邀请在6小时内到期。 朋友可以在Allomusic中打开并用其细节来导入歌曲.</string>
   <string name="cshare_tap_to_copy">磁带复制 C- 共享代码</string>
   <string name="cshare_expires_at">过期 :%1$s</string>
   <string name="cshare_song_count">%1$d歌声</string>
@@ -1599,7 +1599,7 @@
   <string name="donate_report_no_logs">保持这个简短。 这里不要粘上长长的日志 。 对于相撞,回放失败,或严重的错误,使用 GitHub 问题,所以细节会被正确跟踪.</string>
   <string name="donate_report_email_invalid">输入有效的电子邮件地址或留为空 。</string>
   <string name="donate_report_github_issues">为严重错误打开 GitHub 问题</string>
-  <string name="donate_thank_you">感谢您帮助Cubic Music保持独立并积极维护.</string>
+  <string name="donate_thank_you">感谢您帮助Allomusic保持独立并积极维护.</string>
   <string name="rescue_center_summary_enabled">崩溃、回放和运行时日志</string>
   <string name="rescue_center_summary_disabled">先打开杂项以启用调试日志</string>
   <string name="rescue_center_sorted_by_day">按日排序. 只导出您需要的日志切片 。</string>

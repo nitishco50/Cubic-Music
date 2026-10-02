@@ -24,7 +24,7 @@ fun main() = application {
             exitProcess(0)
         },
         state = windowState,
-        title = "Cubic Music"
+        title = "Allomusic"
     ) {
         CubicDesktopAppV2(windowState)
     }

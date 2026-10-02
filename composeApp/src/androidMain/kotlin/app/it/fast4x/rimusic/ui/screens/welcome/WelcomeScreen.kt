@@ -483,7 +483,7 @@ fun WelcomeContent(
                 modifier = Modifier.padding(horizontal = 16.dp) // Reduced padding
             ) {
                 Text(
-                    text = "CUBIC MUSIC",
+                    text = "ALLOMUSIC",
                     color = Color.White,
                     fontSize = 18.sp, // Reduced from 20sp
                     fontWeight = FontWeight.Bold,
@@ -808,6 +808,18 @@ fun WelcomeContent(
                         textAlign = TextAlign.Center
                     )
                 }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // Credit
+                Text(
+                    text = "Made by Nitish Chauhan",
+                    color = Color.White.copy(alpha = 0.65f),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
+                    letterSpacing = 0.4.sp,
+                    textAlign = TextAlign.Center
+                )
             }
         }
         

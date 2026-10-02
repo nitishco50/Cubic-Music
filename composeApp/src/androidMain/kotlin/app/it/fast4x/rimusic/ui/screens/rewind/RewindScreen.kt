@@ -221,7 +221,7 @@ fun RewindScreen(
 /**
  * Deliberately dramatic, non-looping opening sequence.
  * The technical monochrome language is inspired by the reference the user supplied, but the
- * content/branding is Cubic Music and the year always comes from the requested rewind year.
+ * content/branding is Allomusic and the year always comes from the requested rewind year.
  */
 @Composable
 private fun RewindLoadingScreen(
@@ -299,7 +299,7 @@ private fun RewindLoadingScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "CUBIC MUSIC",
+                    text = "ALLOMUSIC",
                     color = cream.copy(alpha = segment(p, 0.02f, 0.14f)),
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Black,
@@ -528,8 +528,8 @@ private suspend fun shareRewindScreenshot(
         val sendIntent = Intent(Intent.ACTION_SEND).apply {
             type = "image/png"
             putExtra(Intent.EXTRA_STREAM, uri)
-            putExtra(Intent.EXTRA_TEXT, "My Cubic Music Rewind $year")
-            clipData = ClipData.newUri(context.contentResolver, "Cubic Music Rewind", uri)
+            putExtra(Intent.EXTRA_TEXT, "My Allomusic Rewind $year")
+            clipData = ClipData.newUri(context.contentResolver, "Allomusic Rewind", uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         val chooser = Intent.createChooser(sendIntent, "Share your Rewind").apply {

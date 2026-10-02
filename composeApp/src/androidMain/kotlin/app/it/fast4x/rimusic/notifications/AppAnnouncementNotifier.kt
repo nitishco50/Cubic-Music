@@ -402,7 +402,7 @@ object AppAnnouncementNotifier {
         Category.EMERGENCY -> CategoryConfig(
             emoji           = "🚨",
             defaultTitle    = "Emergency",
-            defaultText     = "Important notice from Cubic Music.",
+            defaultText     = "Important notice from Allomusic.",
             priority        = NotificationCompat.PRIORITY_MAX,
             androidCategory = NotificationCompat.CATEGORY_ALARM,
             smallIcon       = R.drawable.heart_breaked_yes,

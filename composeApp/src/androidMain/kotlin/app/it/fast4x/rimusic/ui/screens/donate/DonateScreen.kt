@@ -328,7 +328,7 @@ private suspend fun submitSupportReport(
             val body = JSONObject()
                 .put("name", name)
                 .put("email", email)
-                .put("app", "Cubic Music")
+                .put("app", "Allomusic")
                 .put("version", BuildConfig.VERSION_NAME)
                 .put("message", message)
                 .toString()

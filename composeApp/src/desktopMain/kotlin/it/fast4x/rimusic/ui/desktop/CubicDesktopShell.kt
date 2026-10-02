@@ -137,7 +137,7 @@ internal fun CubicSidebar(
             CubicLogo(38.dp)
             Column {
                 Text(
-                    text = "Cubic Music",
+                    text = "Allomusic",
                     color = CubicColors.Text,
                     fontWeight = FontWeight.Bold,
                     fontSize = 17.sp

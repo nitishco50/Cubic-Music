@@ -68,7 +68,7 @@ internal fun CubicMiniPlayer(
     ) {
         CubicArtwork(song?.thumbnailUrl, Modifier.size(64.dp), 18.dp)
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-            Text(song?.title ?: "Cubic Music", color = CubicColors.Text, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(song?.title ?: "Allomusic", color = CubicColors.Text, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(3.dp))
             Text(if (isResolving) "Preparing stream" else song?.artistsText ?: "Nothing playing", color = CubicColors.TextMuted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(8.dp))
@@ -93,7 +93,7 @@ internal fun CubicMiniPlayer(
             Icon(if (state.isMuted || state.volume == 0f) Icons.AutoMirrored.Rounded.VolumeOff else Icons.AutoMirrored.Rounded.VolumeUp, "Mute", tint = CubicColors.TextSecondary, modifier = Modifier.size(19.dp))
         }
         IconButton(onClick = onRestore, modifier = Modifier.size(32.dp)) {
-            Icon(Icons.Rounded.OpenInFull, "Restore Cubic Music", tint = CubicColors.Accent, modifier = Modifier.size(19.dp))
+            Icon(Icons.Rounded.OpenInFull, "Restore Allomusic", tint = CubicColors.Accent, modifier = Modifier.size(19.dp))
         }
     }
 }

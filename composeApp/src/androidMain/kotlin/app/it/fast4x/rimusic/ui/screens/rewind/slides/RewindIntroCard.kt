@@ -104,7 +104,7 @@ fun RewindIntroCard(
 
             Column(modifier = Modifier.fillMaxSize()) {
                 RewindReveal(active, 50, direction = RewindRevealDirection.Left, distance = 18.dp) {
-                    RewindKicker("CUBIC MUSIC • ${data.year}", RewindLime)
+                    RewindKicker("ALLOMUSIC • ${data.year}", RewindLime)
                 }
 
                 Spacer(Modifier.height(if (compact) 14.dp else 18.dp))

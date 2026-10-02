@@ -69,7 +69,7 @@ fun AppleAppHeader(navController: NavController) {
                 }
 
                 Text(
-                    text = if (isHome) stringResource(R.string.apple_listen_now) else "Cubic Music",
+                    text = if (isHome) stringResource(R.string.apple_listen_now) else "Allomusic",
                     style = typography().xxl.bold,
                     color = colorPalette().text,
                     maxLines = 1,

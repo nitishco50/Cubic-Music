@@ -1638,7 +1638,7 @@ fun MediaItemMenu(
                             ),
                             Info(
                                 ExternalUris.cubicMusicSong(mediaItem.mediaId),
-                                "Cubic Music"
+                                "Allomusic"
                             ),
                             Info(
                                 ExternalUris.piped(mediaItem.mediaId),

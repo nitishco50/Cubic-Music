@@ -322,7 +322,7 @@ class DiscordPresenceManager(
             rpc?.setActivity(
                 activity = Activity(
                     applicationId = APPLICATION_ID,
-                    name = "Cubic-Music",
+                    name = "Allomusic",
                     details = details,
                     state = state,
                     type = TypeDiscordActivity.LISTENING.value,
@@ -336,7 +336,7 @@ class DiscordPresenceManager(
                         largeText = largeTextValue,
                         smallText = "v${getVersionName(context)}",
                     ),
-                    buttons = listOf("Get Cubic-Music", "Listen to YTMusic"),
+                    buttons = listOf("Get Allomusic", "Listen to YTMusic"),
                     metadata = com.my.kizzyrpc.model.Metadata(
                         listOf(
                             "https://github.com/cybruGhost/Cubic-Music/",

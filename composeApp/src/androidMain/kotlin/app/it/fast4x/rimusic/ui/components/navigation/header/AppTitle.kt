@@ -100,7 +100,7 @@ private fun AppLogoText( navController: NavController ) {
     }
 
     BasicText(
-        text = "Cubic-Music", // Changed from "Cubic-Music" to just "Cubic"
+        text = "Allomusic", // Changed from "Cubic-Music" to just "Cubic"
         style = TextStyle(
             fontSize = 20.sp, // Slightly higher than typical medium (~16-18sp), but smaller than xl (~24sp)
             fontWeight = typography().xl.semiBold.fontWeight, // Using xl fontWeight

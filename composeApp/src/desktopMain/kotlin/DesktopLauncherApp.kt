@@ -36,7 +36,7 @@ fun DesktopLauncherApp() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Cubic Music Desktop",
+                    text = "Allomusic Desktop",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White

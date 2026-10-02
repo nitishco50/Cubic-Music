@@ -1060,7 +1060,7 @@
   <string name="retry_with_other_sources">重試回放</string>
   <string name="retry_with_other_sources_hint">再次嘗試選中的源, 不替換當前歌曲 。</string>
   <string name="redownload_song">重新下載歌曲</string>
-  <string name="redownload_song_hint">此已下載的文件似乎已損壞 。 Cubic Music將清理斷開的離線副本並再次下載.</string>
+  <string name="redownload_song_hint">此已下載的文件似乎已損壞 。 Allomusic將清理斷開的離線副本並再次下載.</string>
   <string name="settings_assistant_title">設置助理</string>
   <string name="settings_assistant_prompt">你們在找什麼? 搜索一個設置名稱、特性或問題,我將指向正確的區域。</string>
   <string name="settings_assistant_popup">設置助理</string>

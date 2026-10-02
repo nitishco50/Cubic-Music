@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption
 
 internal object CubicDownloadStore {
     val directory: File by lazy {
-        File(System.getProperty("user.home"), "Music/Cubic Music/Downloads").apply { mkdirs() }
+        File(System.getProperty("user.home"), "Music/Allomusic/Downloads").apply { mkdirs() }
     }
 
     fun downloadedSongIds(): Set<String> =

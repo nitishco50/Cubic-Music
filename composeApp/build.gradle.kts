@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
-val APP_NAME = "Cubic-Music"
-val DESKTOP_APP_NAME = "Cubic Music"
+val APP_NAME = "Allomusic"
+val DESKTOP_APP_NAME = "Allomusic"
 
 val localProperties = Properties().apply {
     val file = rootProject.file("local.properties")
@@ -190,7 +190,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.Cubic.music"
+        applicationId = "allora.allomusic"
         minSdk = 23
         targetSdk = 36
         versionCode = 110

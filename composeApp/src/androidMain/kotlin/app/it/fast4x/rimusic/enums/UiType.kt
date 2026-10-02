@@ -19,7 +19,7 @@ enum class UiType: TextView {
     override val text: String
         @Composable
         get() = when (this) {
-            RiMusic -> "Cubic-Music"
+            RiMusic -> "Allomusic"
             ViMusic -> "Jennie"
             Apple -> "Apple (iOS)"
         }

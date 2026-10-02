@@ -91,7 +91,7 @@ fun RewindFinaleCard(
 
             Column(modifier = Modifier.fillMaxSize()) {
                 RewindReveal(active, 40, direction = RewindRevealDirection.Left) {
-                    RewindKicker("CUBIC MUSIC • REWIND ${data.year}", RewindLime)
+                    RewindKicker("ALLOMUSIC • REWIND ${data.year}", RewindLime)
                 }
 
                 Spacer(Modifier.height(10.dp))
@@ -259,7 +259,7 @@ fun RewindFinaleCard(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "CUBIC MUSIC REWIND ${data.year}",
+                                text = "ALLOMUSIC REWIND ${data.year}",
                                 color = RewindLime,
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Black,

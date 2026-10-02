@@ -2734,7 +2734,7 @@ override fun onPlaybackStateChanged(playbackState: Int) {
         val displayMediaItem = displayedMediaItem()
         if (displayMediaItem == null) {
             val fallbackNotification = NotificationCompat.Builder(this, NotificationChannelId)
-                .setContentTitle("Cubic Music")
+                .setContentTitle("Allomusic")
                 .setContentText("Loading...")
                 .setSmallIcon(R.drawable.ic_launcher_monochrome)
                 .setAutoCancel(false)

@@ -484,7 +484,7 @@
 <string name="retry_with_other_sources">Retry playback</string>
 <string name="retry_with_other_sources_hint">Try the selected source again without replacing the current song.</string>
 <string name="redownload_song">Re-download song</string>
-<string name="redownload_song_hint">This downloaded file looks corrupted. Cubic Music will clear the broken offline copy and download it again.</string>
+<string name="redownload_song_hint">This downloaded file looks corrupted. Allomusic will clear the broken offline copy and download it again.</string>
 <string name="menu_style">Menu style</string>
 <string name="style_grid">Grid</string>
 <string name="style_list">List</string>
@@ -1187,7 +1187,7 @@
 <string name="loading_recommendations">Loading recommendations&#x2026;</string>
 <string name="recommendations">Recommendations</string>
 <!-- Auto-install strings -->
-<string name="apk_update_title">Cubic Music Update</string>
+<string name="apk_update_title">Allomusic Update</string>
 <string name="apk_download_started_message">Saving update to %1$s</string>
 <string name="apk_download_progress_message">%1$d%% - %2$s</string>
 <string name="apk_download_ready_message">Update downloaded. Install from %1$s</string>
@@ -1401,14 +1401,14 @@
     <string name="downloaded_tools_export_failed">Failed to move downloaded songs</string>
     <string name="downloaded_tools_no_songs">No downloaded songs available</string>
     <string name="downloaded_tools_export_warning_title">Move downloaded songs</string>
-    <string name="downloaded_tools_export_warning_message">Pick a folder that you want to keep as your song data. Cubic Music will copy the current downloaded songs there so your older downloads are preserved.</string>
+    <string name="downloaded_tools_export_warning_message">Pick a folder that you want to keep as your song data. Allomusic will copy the current downloaded songs there so your older downloads are preserved.</string>
     <string name="downloaded_tools_pick_folder">Pick folder</string>
     <string name="downloaded_tools_disable_storage_title">Turn off custom storage</string>
-    <string name="downloaded_tools_disable_storage_message">Cubic Music will switch back to the original download cache. Anything already copied to your custom folder stays there until you delete it yourself.</string>
+    <string name="downloaded_tools_disable_storage_message">Allomusic will switch back to the original download cache. Anything already copied to your custom folder stays there until you delete it yourself.</string>
     <string name="downloaded_tools_disable_storage_progress">Restoring the original download cache</string>
     <string name="downloaded_tools_disable_storage_done">Custom download storage turned off</string>
     <string name="downloaded_tools_copy_existing_title">Move old downloaded songs too?</string>
-    <string name="downloaded_tools_copy_existing_message">Future downloads will keep using the safe internal download cache and will also be mirrored into the selected folder. Do you also want Cubic Music to move your older downloaded songs into that folder now?</string>
+    <string name="downloaded_tools_copy_existing_message">Future downloads will keep using the safe internal download cache and will also be mirrored into the selected folder. Do you also want Allomusic to move your older downloaded songs into that folder now?</string>
     <string name="downloaded_tools_copy_existing_progress">Moving old downloaded songs into the selected folder</string>
     <string name="downloaded_tools_copy_existing_confirm">Move old songs</string>
 <string name="downloaded_tools_future_only">Future only</string>
@@ -1437,14 +1437,14 @@
 <string name="app_announcements_channel_name">Announcements</string>
     <string name="app_announcements_channel_description">Update, promo, and custom app messages</string>
 <string name="cshare_title">C-Share</string>
-<string name="cshare_create_description">Create a private playlist invite that expires in 6 hours. Friends can open it in Cubic Music and import the songs with their details.</string>
+<string name="cshare_create_description">Create a private playlist invite that expires in 6 hours. Friends can open it in Allomusic and import the songs with their details.</string>
 <string name="cshare_tap_to_copy">Tap to copy C-Share code</string>
 <string name="cshare_expires_at">Expires: %1$s</string>
 <string name="cshare_song_count">%1$d songs</string>
 <string name="cshare_creating">Creating...</string>
 <string name="cshare_create_code">Create code</string>
 <string name="cshare_import_title">Import C-Share</string>
-<string name="cshare_import_description">Paste a C-Share code. Cubic Music previews it first, then imports only after you confirm.</string>
+<string name="cshare_import_description">Paste a C-Share code. Allomusic previews it first, then imports only after you confirm.</string>
 <string name="cshare_link_label">C-Share code</string>
 <string name="cshare_library_description">Share a playlist as a private Cubic code. It expires after 6 hours, and friends can import the playlist with titles, artists, duration, and art.</string>
 <string name="cshare_paste_code">Paste a C-Share code</string>
@@ -1473,13 +1473,13 @@
 <string name="rewind_no_songs_subtitle">Play more music and your rewind will start building itself.</string>
 <string name="rewind_start">Start rewind</string>
 <string name="thumbnail_share_title">Share artwork</string>
-<string name="thumbnail_share_app_name">Cubic Music</string>
+<string name="thumbnail_share_app_name">Allomusic</string>
 <string name="thumbnail_share_pick_art">Pick artwork</string>
 <string name="thumbnail_share_action">Share</string>
 <string name="thumbnail_share_card_action">Share branded art</string>
 <string name="thumbnail_share_card_with_link_action">Share art with song link</string>
 <string name="thumbnail_share_text_action">Share name and link</string>
-<string name="thumbnail_share_cubic_link_action">Share art with Cubic Music link</string>
+<string name="thumbnail_share_cubic_link_action">Share art with Allomusic link</string>
 <string name="thumbnail_share_chooser">Share song</string>
 <string name="thumbnail_share_try_omada">Try Alt art</string>
 <string name="thumbnail_share_finding">Finding...</string>
@@ -1490,9 +1490,9 @@
 <string name="rewind_slide_top_artists">Artists in your orbit</string>
 <string name="rewind_slide_top_albums">Albums that stayed close</string>
 <string name="rewind_slide_months">Your year by month</string>
-<string name="rewind_slide_recap">Cubic Music recap</string>
+<string name="rewind_slide_recap">Allomusic recap</string>
 <string name="rewind_slide_finale">That was your sound</string>
-<string name="rewind_donate_button">Support Cubic Music</string>
+<string name="rewind_donate_button">Support Allomusic</string>
 <string name="rewind_total_minutes">Total minutes</string>
 <string name="rewind_total_plays">Total plays</string>
 <string name="rewind_days_with_music">Days with music</string>
@@ -1548,7 +1548,7 @@
 <string name="show_rescue_center_in_menu_description">Adds quick access between Donate and Settings.</string>
 <string name="show_rescue_center_in_menu_debug_description">Debug logging is on, so Rescue Center is always shown.</string>
 
-    <string name="critical_update_artwork">Cubic Music critical update</string>
+    <string name="critical_update_artwork">Allomusic critical update</string>
     <string name="update_versions">Available: %1$s · Installed: %2$s</string>
     <string name="installed_version">Installed version: %1$s</string>
     <string name="critical_fixes_ready">Critical fixes are ready in this release.</string>
@@ -1557,7 +1557,7 @@
     <string name="open_notice">Open notice</string>
     <string name="open_link">Open link</string>
 <string name="exportify">Exportify</string>
-    <string name="exportify_native_title">Export Spotify to Cubic Music</string>
+    <string name="exportify_native_title">Export Spotify to Allomusic</string>
     <string name="exportify_native_subtitle">Move playlists through a focused native import workflow.</string>
     <string name="exportify_open">Open Exportify</string>
     <string name="exportify_open_detail">Sign in to Spotify and download your playlist CSV.</string>
@@ -1565,7 +1565,7 @@
     <string name="exportify_step_one">Open Exportify and sign in with Spotify.</string>
     <string name="exportify_step_two">Choose playlists to export, then download the CSV file.</string>
     <string name="exportify_step_three">Return here and tap Import playlist to select the CSV.</string>
-    <string name="exportify_step_four">Use C-Share to send or receive Cubic Music playlists.</string>
+    <string name="exportify_step_four">Use C-Share to send or receive Allomusic playlists.</string>
     <string name="exportify_import_tools">Import tools</string>
     <string name="exportify_import_tools_detail">CSV imports create local playlists and match Spotify tracks to playable YouTube Music results. This area is ready for more migration tools.</string>
 <string name="exportify_download_csv_title">Download CSV</string>
@@ -1584,7 +1584,7 @@
 <string name="change">Change</string>
 <string name="open">Open</string>
 <string name="refresh">Refresh</string>
-<string name="donate_support_title">Support Cubic Music</string>
+<string name="donate_support_title">Support Allomusic</string>
 <string name="donate_support_subtitle">Your contribution keeps playback fixes, infrastructure, and new releases moving.</string>
 <string name="donate_maintainer_pass">Maintainer Pass</string>
 <string name="donate_amounts">$4 | $5 | $15 | $30</string>
@@ -1596,8 +1596,8 @@
 <string name="donate_mpesa_subtitle">Local support from KSh 30</string>
 <string name="donate_mpesa_detail">Support Pal Global</string>
 <string name="donate_report_issue_title">Report an issue</string>
-<string name="donate_report_issue_subtitle">Send a Cubic Music support report</string>
-<string name="donate_report_issue_detail">Message Cubic Music support directly</string>
+<string name="donate_report_issue_subtitle">Send a Allomusic support report</string>
+<string name="donate_report_issue_detail">Message Allomusic support directly</string>
 <string name="donate_report_name">Your name</string>
 <string name="donate_report_email">Email (optional)</string>
 <string name="donate_report_message">Describe the issue</string>
@@ -1608,11 +1608,11 @@
 <string name="donate_report_no_logs">Keep this short. Do not paste long logs here. For crashes, playback failures, or serious bugs, use GitHub issues so details are tracked properly.</string>
 <string name="donate_report_email_invalid">Enter a valid email address or leave it empty.</string>
 <string name="donate_report_github_issues">Open GitHub issues for serious bugs</string>
-<string name="donate_thank_you">Thank you for helping Cubic Music stay independent and actively maintained.</string>
+<string name="donate_thank_you">Thank you for helping Allomusic stay independent and actively maintained.</string>
 <string name="rescue_center_summary_enabled">Crash, playback and runtime logs</string>
 <string name="rescue_center_summary_disabled">Open Misc to enable debug logs first</string>
 <string name="rescue_center_sorted_by_day">Sorted by day. Export only the log slice you need.</string>
-<string name="cubic_music_rescue_center">Cubic Music Rescue Center</string>
+<string name="cubic_music_rescue_center">Allomusic Rescue Center</string>
 <string name="cubic_listener">Cubic listener</string>
 <string name="failed_to_fetch_weather_data">Failed to fetch weather data</string>
 <string name="change_weather_location">Change Weather Location</string>
@@ -1621,7 +1621,7 @@
 <string name="city_name">City name</string>
 <string name="weather_city_placeholder">e.g., London, Tokyo, Nairobi</string>
 <string name="weather_accuracy_tip">Tip: Weather conditions might not be very accurate</string>
-<string name="cubic_music_signature">Cyberghost @2026 Cubic Music</string>
+<string name="cubic_music_signature">Cyberghost @2026 Allomusic</string>
 <string name="welcome_title">Welcome</string>
 <string name="welcome_name_subtitle">Let us get started with your name</string>
 <string name="enter_your_name">Enter your name</string>

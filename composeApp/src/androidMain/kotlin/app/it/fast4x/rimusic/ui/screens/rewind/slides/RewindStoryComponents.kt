@@ -85,7 +85,7 @@ internal enum class RewindRevealDirection {
  * Full-screen Rewind story shell.
  *
  * Important layout rule: slide content never owns the very bottom edge. That space is
- * reserved for the Cubic Music signature so the brand cannot land on top of slide copy.
+ * reserved for the Allomusic signature so the brand cannot land on top of slide copy.
  */
 @Composable
 internal fun RewindStoryShell(
@@ -180,13 +180,13 @@ internal fun RewindBrandBug(
     ) {
         Image(
             painter = painterResource(R.drawable.ic_launcher),
-            contentDescription = "Cubic Music",
+            contentDescription = "Allomusic",
             modifier = Modifier
                 .size(18.dp)
                 .clip(RoundedCornerShape(5.dp))
         )
         Text(
-            text = "CUBIC MUSIC",
+            text = "ALLOMUSIC",
             color = foreground.copy(alpha = 0.68f),
             fontSize = 7.sp,
             lineHeight = 8.sp,
